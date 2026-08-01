@@ -1243,7 +1243,15 @@ body.night-mode #calc-display {
   body {
     overflow: hidden;
     background: var(--bg-main);
+    --mobile-content-size: 14px;
+    --mobile-content-line: 1.52;
   }
+
+  /* Mobile reading size is intentionally compact and remains adjustable from the text button. */
+  body.text-size-0 { --mobile-content-size: 12.5px; --mobile-content-line: 1.46; }
+  body.text-size-1 { --mobile-content-size: 14px;   --mobile-content-line: 1.52; }
+  body.text-size-2 { --mobile-content-size: 16px;   --mobile-content-line: 1.56; }
+  body.text-size-3 { --mobile-content-size: 18px;   --mobile-content-line: 1.60; }
 
   /* Preserve the original desktop/tablet bars and replace them only on phones. */
   body > .topbar,
@@ -1262,16 +1270,16 @@ body.night-mode #calc-display {
   }
 
   .mobile-topbar {
-    height: 72px;
-    flex: 0 0 72px;
-    padding: 8px 12px 7px 16px;
+    height: 44px;
+    flex: 0 0 44px;
+    padding: 3px 4px 3px 4px;
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     color: #ffffff;
     background: var(--navy);
-    border-bottom: 2px solid #ffffff;
+    border-bottom: 1px solid #ffffff;
   }
 
   .mobile-heading-block {
@@ -1283,8 +1291,8 @@ body.night-mode #calc-display {
   .mobile-app-title {
     margin: 0;
     color: #ffffff;
-    font-size: 20px;
-    line-height: 1.08;
+    font-size: 14px;
+    line-height: 1;
     font-weight: 700;
     letter-spacing: 0;
     white-space: nowrap;
@@ -1292,12 +1300,12 @@ body.night-mode #calc-display {
 
   .mobile-qid-line {
     min-width: 0;
-    margin-top: 6px;
+    margin-top: 2px;
     display: flex;
     align-items: baseline;
     gap: 4px;
     color: #ffffff;
-    font-size: 14px;
+    font-size: 9.5px;
     line-height: 1;
     font-weight: 500;
     white-space: nowrap;
@@ -1318,15 +1326,15 @@ body.night-mode #calc-display {
   .mobile-status-block {
     display: grid;
     align-content: center;
-    gap: 6px;
+    gap: 1px;
   }
 
   .mobile-status-row {
-    min-height: 22px;
+    min-height: 16px;
     display: grid;
-    grid-template-columns: 27px auto;
+    grid-template-columns: 18px auto;
     align-items: center;
-    column-gap: 6px;
+    column-gap: 3px;
     padding: 0;
     border: 0;
     background: transparent;
@@ -1336,32 +1344,32 @@ body.night-mode #calc-display {
   }
 
   .mobile-status-row .material-symbols-outlined {
-    width: 27px;
-    height: 24px;
+    width: 18px;
+    height: 16px;
     margin: 0;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     color: #ffffff;
-    font-size: 25px;
+    font-size: 17px;
     line-height: 1;
-    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 18;
   }
 
   .mobile-status-value {
-    min-width: 56px;
+    min-width: 3px;
     color: #ffffff;
-    font-size: 15px;
-    line-height: 1;
+    font-size: 10.5px;
+    line-height: .6;
     font-weight: 700;
     text-align: left;
     white-space: nowrap;
   }
 
   .mobile-calc-strip {
-    height: 31px;
-    flex: 0 0 31px;
-    padding: 0 8px;
+    height: 28px;
+    flex: 0 0 28px;
+    padding: 0 7px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -1373,12 +1381,12 @@ body.night-mode #calc-display {
     height: 100%;
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 3px;
   }
 
   .mobile-text-size-wrapper {
     position: relative;
-    height: 31px;
+    height: 28px;
     display: inline-flex;
     align-items: center;
   }
@@ -1387,7 +1395,7 @@ body.night-mode #calc-display {
     display: none;
     position: absolute;
     z-index: 500;
-    top: 35px;
+    top: 31px;
     right: -42px;
     padding: 5px;
     gap: 4px;
@@ -1431,8 +1439,8 @@ body.night-mode #calc-display {
   }
 
   .mobile-icon-btn {
-    width: 31px;
-    height: 31px;
+    width: 28px;
+    height: 28px;
     padding: 0;
     margin: 0;
     display: inline-flex;
@@ -1446,16 +1454,16 @@ body.night-mode #calc-display {
   }
 
   .mobile-icon-btn .material-symbols-outlined {
-    width: 29px;
-    height: 29px;
+    width: 26px;
+    height: 26px;
     margin: 0;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     color: #ffffff;
-    font-size: 28px;
+    font-size: 22px;
     line-height: 1;
-    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 28;
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 22;
     text-shadow: 0 0 1px rgba(255,255,255,0.95), 0 1px 1px rgba(0,0,0,0.18);
   }
 
@@ -1471,13 +1479,13 @@ body.night-mode #calc-display {
 
   .mobile-mark-review-btn.is-marked .material-symbols-outlined {
     color: #ffe45c;
-    font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 28;
+    font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 22;
   }
 
   /* One scrolling column on phones: result box first, explanation directly below it. */
   .main,
   .main.show-result {
-    height: calc(100dvh - 72px - 31px - 66px);
+    height: calc(100dvh - 44px - 28px - 66px);
     min-height: 0;
     display: block;
     overflow-x: hidden;
@@ -1491,13 +1499,136 @@ body.night-mode #calc-display {
     width: 100%;
     height: auto;
     overflow: visible;
-    padding: 24px;
+    padding: 14px 16px;
     background: var(--bg-left) !important;
     box-shadow: none !important;
   }
 
   .left {
-    padding-bottom: 18px;
+    padding-bottom: 14px;
+  }
+
+  /* Compact mobile question and explanation typography. Bar text is not affected. */
+  #question,
+  #caseStudyContainer,
+  #options .option,
+  #rightPanel,
+  #explanation,
+  .tab-content {
+    font-size: var(--mobile-content-size) !important;
+    line-height: var(--mobile-content-line) !important;
+  }
+
+  #question p,
+  #question div,
+  #question span,
+  #question li,
+  #caseStudyContainer p,
+  #caseStudyContainer div,
+  #caseStudyContainer span,
+  #caseStudyContainer li,
+  #options .option > *,
+  #explanation .correct-exp,
+  #explanation .correct-exp p,
+  #explanation .correct-exp div,
+  #explanation .correct-exp span,
+  #explanation .correct-exp li,
+  .tab-content p,
+  .tab-content div,
+  .tab-content span,
+  .tab-content li,
+  .tab-content td,
+  .tab-content th {
+    font-size: inherit !important;
+    line-height: inherit !important;
+  }
+
+  #options {
+    margin-top: 8px;
+  }
+
+  #options .option {
+    padding: 7px 4px 7px 36px;
+    margin-bottom: 4px;
+  }
+
+  #options .option::before {
+    width: 19px;
+    height: 19px;
+    left: 8px;
+    border-width: 1.5px;
+  }
+
+  /* Phone view: keep option selection boxes clean after submission. */
+  #options .option.correct::after,
+  #options .option.wrong::after {
+    display: none !important;
+    content: none !important;
+  }
+
+  /* Keep the result box in normal document order, directly below the options. */
+  .main.show-result .left {
+    display: block;
+  }
+
+  .main.show-result #questionResultBox {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 12px;
+    row-gap: 0;
+    margin: 0 0 10px;
+    padding: 7px 10px;
+    border-width: 1px;
+    border-radius: 7px;
+    box-shadow: none;
+  }
+
+  .main.show-result #questionResultBox .result-title {
+    grid-column: 1 / -1;
+    margin: 0 0 3px;
+    font-size: 14px;
+    line-height: 1.15;
+  }
+
+  .main.show-result #questionResultBox .result-row {
+    min-width: 0;
+    gap: 5px;
+    padding: 3px 0;
+    border-bottom-width: 1px;
+    font-size: 11.5px;
+    line-height: 1.15;
+  }
+
+  .main.show-result #questionResultBox .result-row span:first-child {
+    min-width: 0;
+  }
+
+  .main.show-result #questionResultBox .result-row span:last-child {
+    flex: 0 0 auto;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .main.show-result #questionResultBox .border-svg {
+    border-radius: 7px;
+  }
+
+  .additional-text-box {
+    margin-top: 10px;
+    padding: 9px 10px;
+    font-size: var(--mobile-content-size);
+    line-height: var(--mobile-content-line);
+  }
+
+  .exp-meta {
+    margin-top: 12px;
+    padding-top: 9px;
+  }
+
+  .exp-topic,
+  .exp-subject {
+    margin-bottom: 5px;
+    font-size: calc(var(--mobile-content-size) - 1px);
   }
 
   .main .divider,
@@ -1609,15 +1740,15 @@ body.night-mode #calc-display {
   }
 
   #calculator {
-    top: 112px;
+    top: 84px;
     left: calc(50% - min(165px, 46vw));
     transform: none;
   }
 
   #aiModal {
-    top: 103px;
+    top: 80px;
     width: min(100vw, 500px);
-    height: calc(100dvh - 169px);
+    height: calc(100dvh - 146px);
   }
 }
 
@@ -1824,7 +1955,7 @@ body.night-mode #calc-display {
   <div class="mobile-nav-cell">
     <button class="mobile-nav-btn" type="button" onclick="prevQ()">
       <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
-      <span>Previous</span>
+      <span>Prev</span>
     </button>
   </div>
   <div class="mobile-nav-cell">
@@ -2059,6 +2190,7 @@ function goToQuestionFromNavigator(index){
   closeNavigator();
   render();
   syncTimerForCurrentQuestion();
+  scrollMobileResultToTop();
 }
 
 function toggleTextSizeBar(){
@@ -2078,6 +2210,29 @@ function setTextSizeLevel(level){
   const mobileBar = document.getElementById('mobileTextSizeBar');
   if(desktopBar) desktopBar.classList.remove('active');
   if(mobileBar) mobileBar.classList.remove('active');
+}
+
+function scrollMobileResultToTop(){
+  if(!window.matchMedia('(max-width: 600px)').matches) return;
+
+  const mainScroller = document.querySelector('.main');
+  const resultBox = document.getElementById('questionResultBox');
+  if(!mainScroller) return;
+
+  const resultIsVisible = resultBox &&
+    getComputedStyle(resultBox).display !== 'none' &&
+    resultBox.offsetParent !== null;
+
+  if(!resultIsVisible){
+    mainScroller.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    return;
+  }
+
+  const mainRect = mainScroller.getBoundingClientRect();
+  const resultRect = resultBox.getBoundingClientRect();
+  const resultTop = Math.max(0, mainScroller.scrollTop + resultRect.top - mainRect.top);
+
+  mainScroller.scrollTo({ top: resultTop, left: 0, behavior: 'smooth' });
 }
 
 function toggleNightMode() {
@@ -2508,6 +2663,7 @@ function check(){
 
   render();
   updateAdaptiveResultBox(q, selected, correct, true);
+  requestAnimationFrame(() => requestAnimationFrame(scrollMobileResultToTop));
 }
 
 function nextQ(){
@@ -2515,6 +2671,7 @@ function nextQ(){
     qIndex++;
     render();
     syncTimerForCurrentQuestion();
+    scrollMobileResultToTop();
   }
 }
 
@@ -2523,6 +2680,7 @@ function prevQ(){
     qIndex--;
     render();
     syncTimerForCurrentQuestion();
+    scrollMobileResultToTop();
   }
 }
 
