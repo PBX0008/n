@@ -499,7 +499,8 @@ select.ngn-select {
 
 /* MAIN LAYOUT */
 .main{
-  height:calc(100vh - 76px - 40px - 40px);
+  /* 68px desktop top bar + 40px utility strip + 40px fixed lower bar. */
+  height:calc(100vh - 68px - 40px - 40px);
   display:grid;
   grid-template-columns:1fr 0 0;
 }
@@ -1198,6 +1199,70 @@ body.night-mode #calc-display {
 .text-size-bar.active { display: inline-flex; }
 .text-size-choice { border: 1px solid #d5dce5; background: #f8fbff; min-width: 34px; height: 30px; cursor: pointer; font-weight: bold; }
 
+/* Desktop/laptop reading-size levels. Phone values remain independently controlled below. */
+body.text-size-0 { --desktop-content-size: 13px; --desktop-content-line: 1.48; }
+body.text-size-1 { --desktop-content-size: 15px; --desktop-content-line: 1.58; }
+body.text-size-2 { --desktop-content-size: 17px; --desktop-content-line: 1.66; }
+body.text-size-3 { --desktop-content-size: 19px; --desktop-content-line: 1.72; }
+
+@media (min-width: 601px) {
+  body.text-size-0 #question,
+  body.text-size-0 #caseStudyContainer,
+  body.text-size-0 #options .option,
+  body.text-size-0 #rightPanel,
+  body.text-size-0 #explanation,
+  body.text-size-0 .tab-content,
+  body.text-size-0 .additional-text-box,
+  body.text-size-1 #question,
+  body.text-size-1 #caseStudyContainer,
+  body.text-size-1 #options .option,
+  body.text-size-1 #rightPanel,
+  body.text-size-1 #explanation,
+  body.text-size-1 .tab-content,
+  body.text-size-1 .additional-text-box,
+  body.text-size-2 #question,
+  body.text-size-2 #caseStudyContainer,
+  body.text-size-2 #options .option,
+  body.text-size-2 #rightPanel,
+  body.text-size-2 #explanation,
+  body.text-size-2 .tab-content,
+  body.text-size-2 .additional-text-box,
+  body.text-size-3 #question,
+  body.text-size-3 #caseStudyContainer,
+  body.text-size-3 #options .option,
+  body.text-size-3 #rightPanel,
+  body.text-size-3 #explanation,
+  body.text-size-3 .tab-content,
+  body.text-size-3 .additional-text-box {
+    font-size: var(--desktop-content-size) !important;
+    line-height: var(--desktop-content-line) !important;
+  }
+
+  body[class*="text-size-"] #question *,
+  body[class*="text-size-"] #caseStudyContainer *,
+  body[class*="text-size-"] #options .option *,
+  body[class*="text-size-"] #explanation .correct-exp,
+  body[class*="text-size-"] #explanation .correct-exp *,
+  body[class*="text-size-"] #explanation .additional-text-box *,
+  body[class*="text-size-"] .tab-content * {
+    font-size: inherit !important;
+    line-height: inherit !important;
+  }
+
+  body[class*="text-size-"] #explanation .exp-title,
+  body[class*="text-size-"] #explanation .exp-title strong,
+  body[class*="text-size-"] #explanation .exp-topic,
+  body[class*="text-size-"] #explanation .exp-subject {
+    font-size: inherit !important;
+    line-height: inherit !important;
+  }
+
+  body[class*="text-size-"] #explanation .speaker-icon {
+    font-size: 1.25em !important;
+    line-height: 1 !important;
+  }
+}
+
 .navigator-modal {
   display: none; position: fixed; inset: 0; z-index: 24000;
   background: rgba(0,0,0,0.38); align-items: center; justify-content: center;
@@ -1485,7 +1550,7 @@ body.night-mode #calc-display {
   /* One scrolling column on phones: result box first, explanation directly below it. */
   .main,
   .main.show-result {
-    height: calc(100dvh - 44px - 28px - 66px);
+    height: calc(100dvh - 44px - 28px - 46px);
     min-height: 0;
     display: block;
     overflow-x: hidden;
@@ -1780,7 +1845,7 @@ body.night-mode #calc-display {
   #aiModal {
     top: 80px;
     width: min(100vw, 500px);
-    height: calc(100dvh - 146px);
+    height: calc(100dvh - 126px);
   }
 }
 
@@ -2244,6 +2309,41 @@ function setTextSizeLevel(level){
   if(mobileBar) mobileBar.classList.remove('active');
 }
 
+let mobileResultScrollFrame = 0;
+
+function animateMobileScroll(scroller, targetTop, duration = 900){
+  if(mobileResultScrollFrame) cancelAnimationFrame(mobileResultScrollFrame);
+
+  const startTop = scroller.scrollTop;
+  const maxTop = Math.max(0, scroller.scrollHeight - scroller.clientHeight);
+  const destination = Math.max(0, Math.min(targetTop, maxTop));
+  const distance = destination - startTop;
+
+  if(Math.abs(distance) < 1){
+    scroller.scrollTop = destination;
+    return;
+  }
+
+  const startedAt = performance.now();
+  const easeInOutCubic = progress => progress < 0.5
+    ? 4 * progress * progress * progress
+    : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+  const step = now => {
+    const progress = Math.min(1, (now - startedAt) / duration);
+    scroller.scrollTop = startTop + distance * easeInOutCubic(progress);
+
+    if(progress < 1){
+      mobileResultScrollFrame = requestAnimationFrame(step);
+    } else {
+      scroller.scrollTop = destination;
+      mobileResultScrollFrame = 0;
+    }
+  };
+
+  mobileResultScrollFrame = requestAnimationFrame(step);
+}
+
 function scrollMobileResultToTop(){
   if(!window.matchMedia('(max-width: 600px)').matches) return;
 
@@ -2256,15 +2356,18 @@ function scrollMobileResultToTop(){
     resultBox.offsetParent !== null;
 
   if(!resultIsVisible){
-    mainScroller.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+    if(mobileResultScrollFrame) cancelAnimationFrame(mobileResultScrollFrame);
+    mobileResultScrollFrame = 0;
+    mainScroller.scrollTop = 0;
     return;
   }
 
   const mainRect = mainScroller.getBoundingClientRect();
   const resultRect = resultBox.getBoundingClientRect();
-  const resultTop = Math.max(0, mainScroller.scrollTop + resultRect.top - mainRect.top);
+  const resultTop = mainScroller.scrollTop + resultRect.top - mainRect.top;
 
-  mainScroller.scrollTo({ top: resultTop, left: 0, behavior: 'smooth' });
+  /* Deliberately slower than native smooth scrolling so the result visibly glides upward. */
+  animateMobileScroll(mainScroller, resultTop, 900);
 }
 
 function toggleNightMode() {
