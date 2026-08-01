@@ -1499,7 +1499,7 @@ body.night-mode #calc-display {
     width: 100%;
     height: auto;
     overflow: visible;
-    padding: 14px 16px;
+    padding: 12px 8px;
     background: var(--bg-left) !important;
     box-shadow: none !important;
   }
@@ -1543,6 +1543,13 @@ body.night-mode #calc-display {
     line-height: inherit !important;
   }
 
+  #question,
+  #caseStudyContainer,
+  #explanation {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
   #options {
     margin-top: 8px;
   }
@@ -1559,11 +1566,38 @@ body.night-mode #calc-display {
     border-width: 1.5px;
   }
 
-  /* Phone view: keep option selection boxes clean after submission. */
+  /* Phone view: restore the prior compact correct/wrong indicators. */
   #options .option.correct::after,
   #options .option.wrong::after {
-    display: none !important;
-    content: none !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    left: -7px;
+    width: 24px;
+    height: 24px;
+    line-height: 24px;
+    font-family: 'Material Symbols Outlined';
+    font-size: 23px;
+    font-weight: 400;
+    font-style: normal;
+    letter-spacing: normal;
+    text-transform: none;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+  }
+
+  #options .option.correct::after {
+    content: "check" !important;
+    color: #1bad22;
+  }
+
+  #options .option.wrong::after {
+    content: "close" !important;
+    color: #ff2828;
   }
 
   /* Keep the result box in normal document order, directly below the options. */
@@ -1572,25 +1606,23 @@ body.night-mode #calc-display {
   }
 
   .main.show-result #questionResultBox {
-    display: grid !important;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    column-gap: 12px;
-    row-gap: 0;
+    display: block !important;
+    width: 100%;
     margin: 0 0 10px;
-    padding: 7px 10px;
+    padding: 7px 8px;
     border-width: 1px;
     border-radius: 7px;
     box-shadow: none;
   }
 
   .main.show-result #questionResultBox .result-title {
-    grid-column: 1 / -1;
     margin: 0 0 3px;
     font-size: 14px;
     line-height: 1.15;
   }
 
   .main.show-result #questionResultBox .result-row {
+    width: 100%;
     min-width: 0;
     gap: 5px;
     padding: 3px 0;
@@ -1658,7 +1690,7 @@ body.night-mode #calc-display {
     left: 0;
     right: 0;
     bottom: 0;
-    height: 66px;
+    height: 46px;
     padding: 0 0 14px;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -1688,7 +1720,7 @@ body.night-mode #calc-display {
   .mobile-nav-btn {
     width: 100%;
     min-width: 0;
-    height: 52px;
+    height: 35px;
     padding: 0 10px;
     margin: 0;
     border: 0;
@@ -1699,7 +1731,7 @@ body.night-mode #calc-display {
     justify-content: center;
     gap: 10px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 11px;
     line-height: 1;
     font-weight: 700;
     white-space: nowrap;
@@ -1714,7 +1746,7 @@ body.night-mode #calc-display {
   }
 
   .mobile-check-btn {
-    font-size: 17px;
+    font-size: 11px;
   }
 
   .mobile-bottombar::after {
