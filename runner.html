@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0067A9" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="NCLEX-RN" />
+  <title>NCLEX RN Test</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/runner.css" />
+  <script src="assets/auth.js"></script>
+    <script src="assets/haptics.js" defer></script>
+    <script src="assets/pwa.js" defer></script>
+  <script>window.PBXAuth && window.PBXAuth.requireValidAccess();</script>
+</head>
+<body>
+  <div class="loading-screen" id="loadingScreen" role="status" aria-live="polite">
+    <div class="loader"></div>
+    <strong id="loadingText">Loading question data…</strong>
+  </div>
+
+  <iframe id="testFrame" src="test.html" title="NCLEX RN test interface"></iframe>
+
+  <section class="result-screen hidden" id="resultScreen" aria-labelledby="resultTitle">
+    <div class="result-card">
+      <div class="result-heading-row">
+        <div>
+          <p class="eyebrow"><span class="material-symbols-outlined">verified</span> Test Completed</p>
+          <h1 id="resultTitle">Detailed Result</h1>
+          <p class="result-test-name" id="resultTestName"></p>
+        </div>
+        <span class="saved-pill"><span class="material-symbols-outlined">save</span> Saved</span>
+      </div>
+
+      <section class="dashboard-section dashboard-top" aria-label="Completion overview">
+        <div class="dashboard-donut usage-donut" id="completionRing" style="--used-angle:0deg;">
+          <span><strong id="completionPercent">0%</strong><small>Attempted</small></span>
+        </div>
+        <div class="dashboard-stat-list">
+          <div class="dashboard-stat-row no-badge"><span class="dashboard-label">Total Questions</span><span class="dashboard-colon">:</span><strong class="dashboard-value" id="resultTotal">0</strong></div>
+          <div class="dashboard-stat-row"><span class="dashboard-label">Attempted</span><span class="dashboard-colon">:</span><strong class="dashboard-value" id="resultAttempted">0</strong><span class="dashboard-badge badge-primary" id="resultAttemptedPercent">0%</span></div>
+          <div class="dashboard-stat-row"><span class="dashboard-label">Omitted</span><span class="dashboard-colon">:</span><strong class="dashboard-value" id="resultOmitted">0</strong><span class="dashboard-badge badge-muted" id="resultOmittedPercent">0%</span></div>
+        </div>
+      </section>
+
+      <section class="dashboard-section dashboard-bottom" aria-label="Answer result overview">
+        <div class="dashboard-stat-list">
+          <div class="dashboard-stat-row"><span class="dashboard-label">Correct</span><span class="dashboard-colon">:</span><strong class="dashboard-value" id="resultCorrect">0</strong><span class="dashboard-badge badge-correct" id="resultCorrectPercent">0%</span></div>
+          <div class="dashboard-stat-row"><span class="dashboard-label">Incorrect</span><span class="dashboard-colon">:</span><strong class="dashboard-value" id="resultIncorrect">0</strong><span class="dashboard-badge badge-incorrect" id="resultIncorrectPercent">0%</span></div>
+          <div class="dashboard-stat-row"><span class="dashboard-label">Partially Incorrect</span><span class="dashboard-colon">:</span><strong class="dashboard-value" id="resultPartial">0</strong><span class="dashboard-badge badge-partial" id="resultPartialPercent">0%</span></div>
+        </div>
+        <div class="dashboard-donut result-donut" id="scoreRing" style="--correct-end:0deg;--incorrect-end:0deg;--partial-end:0deg;">
+          <span><strong id="resultScore">0%</strong><small>Score</small></span>
+        </div>
+      </section>
+
+      <div class="detail-grid" aria-label="Detailed test statistics">
+        <div class="detail-item"><span class="material-symbols-outlined">star</span><div><small>Points</small><strong id="resultPoints">0 / 0</strong></div></div>
+        <div class="detail-item"><span class="material-symbols-outlined">timer</span><div><small>Total Time</small><strong id="resultTime">00:00</strong></div></div>
+        <div class="detail-item"><span class="material-symbols-outlined">speed</span><div><small>Average / Question</small><strong id="resultAverage">00:00</strong></div></div>
+      </div>
+
+      <div class="result-actions">
+        <a class="action primary" href="main.html"><span class="material-symbols-outlined">dashboard</span>Dashboard</a>
+        <button class="action secondary" id="reviewBtn" type="button"><span class="material-symbols-outlined">rate_review</span>Review Test</button>
+        <button class="action danger" id="retakeBtn" type="button"><span class="material-symbols-outlined">restart_alt</span>Retake</button>
+      </div>
+
+      <footer class="pbx-footer result-footer">
+        <span class="pbx-footer-line">
+          <span class="material-symbols-outlined pbx-footer-icon" aria-hidden="true">verified</span>
+          Digitalized, Designed &amp; Engineered by
+          <a href="https://pbxnursing.com" target="_blank" rel="noopener noreferrer">PBX-Nursing</a>
+        </span>
+      </footer>
+    </div>
+  </section>
+
+  <script src="assets/runner.js"></script>
+</body>
+</html>

@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#edf5fb" />
+  <title>NCLEX RN — Teacher Console</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,300..700,0..1,-50..200" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/teacher.css" />
+  <script src="assets/auth.js"></script>
+  <script src="assets/haptics.js" defer></script>
+  <script src="assets/pwa.js" defer></script>
+  <script>window.PBXAuth && window.PBXAuth.requireValidAccess();</script>
+</head>
+<body>
+  <main class="teacher-shell">
+    <header class="teacher-topbar">
+      <a class="back-btn" href="main.html" aria-label="Back to question selection">
+        <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+        <span>Question Selection</span>
+      </a>
+      <div class="teacher-title">
+        <span class="material-symbols-outlined" aria-hidden="true">school</span>
+        <strong>TEACHER CONSOLE</strong>
+      </div>
+      <div class="bank-status" id="bankStatus" aria-live="polite">Question bank ready to search</div>
+    </header>
+
+    <section class="search-console" aria-label="Question ID lookup">
+      <label for="qidInput">QUESTION ID</label>
+      <div class="search-row">
+        <div class="qid-entry">
+          <span class="qid-prefix">QID</span>
+          <input id="qidInput" type="text" inputmode="numeric" autocomplete="off" spellcheck="false" placeholder="Enter question ID" aria-describedby="searchHint" />
+        </div>
+        <button id="searchBtn" type="button">
+          <span class="material-symbols-outlined" aria-hidden="true">search</span>
+          <span>SHOW QUESTION</span>
+        </button>
+      </div>
+      <p id="searchHint">Enter a Question ID and press Enter. The console searches all question packs.</p>
+      <div class="search-message" id="searchMessage" role="status" aria-live="polite"></div>
+    </section>
+
+    <section class="empty-state" id="emptyState">
+      <span class="material-symbols-outlined" aria-hidden="true">manage_search</span>
+      <h1>Direct Question Review</h1>
+      <p>Enter any Question ID above to display the question, answer choices, correct answer, and complete explanation.</p>
+    </section>
+
+    <article class="question-console" id="questionConsole" hidden>
+      <header class="question-meta-bar">
+        <div>
+          <span class="meta-label">QUESTION ID</span>
+          <strong id="displayQid">QID: ----</strong>
+        </div>
+        <div class="meta-tags">
+          <span id="packTag">Pack</span>
+          <span id="subjectTag">Subject</span>
+          <span id="topicTag">Topic</span>
+        </div>
+      </header>
+
+      <div class="question-layout">
+        <section class="question-pane">
+          <div class="section-heading">
+            <span class="material-symbols-outlined" aria-hidden="true">quiz</span>
+            <h2>Question</h2>
+          </div>
+          <div class="question-text" id="questionText"></div>
+
+          <div class="section-heading options-heading">
+            <span class="material-symbols-outlined" aria-hidden="true">checklist</span>
+            <h2>Answer Options</h2>
+          </div>
+          <div class="teacher-options" id="answerOptions"></div>
+        </section>
+
+        <aside class="answer-pane">
+          <section class="correct-answer-card">
+            <div class="correct-answer-title">
+              <span class="material-symbols-outlined" aria-hidden="true">verified</span>
+              <span>Correct Answer</span>
+            </div>
+            <strong id="correctAnswerText">—</strong>
+            <div id="correctAnswerChoices" class="correct-choice-summary"></div>
+          </section>
+
+          <section class="explanation-card">
+            <div class="section-heading">
+              <span class="material-symbols-outlined" aria-hidden="true">menu_book</span>
+              <h2>Explanation</h2>
+            </div>
+            <div class="explanation-text" id="explanationText"></div>
+            <div class="additional-text" id="additionalText" hidden></div>
+          </section>
+        </aside>
+      </div>
+    </article>
+  </main>
+
+  <script src="assets/teacher.js"></script>
+</body>
+</html>

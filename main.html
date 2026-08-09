@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#d9ecfb" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="NCLEX-RN" />
+  <title>NCLEX RN — Question Selection</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,300..700,0..1,-50..200" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/menu.css" />
+  <script src="assets/auth.js"></script>
+    <script src="assets/haptics.js" defer></script>
+    <script src="assets/pwa.js" defer></script>
+  <script>window.PBXAuth && window.PBXAuth.requireValidAccess();</script>
+</head>
+<body>
+  <main class="selector-shell">
+    <header class="selector-header">
+      <div class="selector-title-row">
+        <h1>FINAL ASSESSMENT TESTS</h1>
+        <button class="purpose-info-btn" id="purposeInfoBtn" type="button" aria-label="About the purpose and vision of this software" aria-haspopup="dialog" aria-controls="purposeVisionModal" title="Purpose &amp; Vision">i</button>
+      </div>
+      <div class="selector-header-actions">
+        <button class="reset-switch" id="clearProgressBtn" type="button" aria-label="Reset all saved progress" title="Reset all progress">Reset</button>
+      </div>
+    </header>
+
+    <section class="overview-panel" aria-label="Overall question statistics">
+      <h2 class="overview-title">OVERALL PERFORMANCE</h2>
+
+      <div class="overview-group overview-usage-group">
+        <div class="overview-stat-list overview-usage-list">
+          <div class="overview-row overview-row-plain"><span>TOTAL QUESTIONS</span><b>:</b><strong id="totalQuestions">0</strong></div>
+          <div class="overview-row"><span>USED QUESTIONS</span><b>:</b><strong id="usedQuestions">0</strong><em class="stat-pill pill-blue" id="usedPercent">0%</em></div>
+          <div class="overview-row"><span>UNUSED QUESTIONS</span><b>:</b><strong id="unusedQuestions">0</strong><em class="stat-pill pill-grey" id="unusedPercent">0%</em></div>
+        </div>
+
+        <div class="meter meter-large usage-meter" id="usageRing" style="--used-angle:0deg">
+          <div class="meter-core"><strong id="usagePercent">0%</strong><span>USAGE</span></div>
+        </div>
+      </div>
+
+      <div class="overview-group overview-result-group">
+        <div class="overview-stat-list overview-result-list">
+          <div class="overview-row"><span>TOTAL CORRECT</span><b>:</b><strong id="totalCorrect">0</strong><em class="stat-pill pill-green" id="correctPercent">0%</em></div>
+          <div class="overview-row"><span>TOTAL INCORRECT</span><b>:</b><strong id="totalIncorrect">0</strong><em class="stat-pill pill-red" id="incorrectPercent">0%</em></div>
+          <div class="overview-row"><span>PARTIALLY INCORR.</span><b>:</b><strong id="totalPartial">0</strong><em class="stat-pill pill-yellow" id="partialPercent">0%</em></div>
+        </div>
+
+        <div class="meter meter-large result-meter" id="resultRing" style="--correct-end:0deg;--incorrect-end:0deg;--partial-end:0deg">
+          <div class="meter-core"><strong id="resultPercent">0%</strong><span>CORRECT</span></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="notice hidden" id="notice" role="status"></div>
+    <section class="test-grid" id="testGrid" aria-label="Available tests"></section>
+
+    <div class="teacher-console-end">
+      <a class="teacher-console-end-btn" href="teacher.html" aria-label="Open teacher question console" title="Teacher Console">
+        <span class="material-symbols-outlined" aria-hidden="true">school</span>
+        <span>Teacher Console</span>
+      </a>
+    </div>
+
+    <footer class="pbx-footer selector-footer">
+      <span class="pbx-footer-line">
+        <span class="material-symbols-outlined pbx-footer-icon" aria-hidden="true">verified</span>
+        Digitalized, Designed &amp; Engineered by
+        <a href="https://pbxnursing.com" target="_blank" rel="noopener noreferrer">PBX-Nursing</a>
+      </span>
+    </footer>
+  </main>
+
+  <div class="purpose-modal" id="purposeVisionModal" role="dialog" aria-modal="true" aria-labelledby="purposeVisionTitle" aria-hidden="true">
+    <div class="purpose-modal-backdrop" data-purpose-close></div>
+    <section class="purpose-modal-card" role="document" tabindex="-1">
+      <header class="purpose-modal-header">
+        <h2 id="purposeVisionTitle">Purpose and Vision of Developing the Software</h2>
+        <button class="purpose-modal-close" id="purposeModalClose" type="button" aria-label="Close purpose and vision popup">
+          <span class="material-symbols-outlined" aria-hidden="true">close</span>
+        </button>
+      </header>
+
+      <div class="purpose-modal-body">
+    <p>The idea for this software came from my own experience as a student at the academy. I saw an opportunity to <strong>strengthen the academy’s existing teaching system</strong> through technology.</p>
+
+    <p>The platform provides <strong>instant results</strong>, <strong>detailed rationales</strong>, an <strong>exam-like interface</strong>, <strong>saved progress</strong>, <strong>performance tracking</strong>, and <strong>identification of weak areas</strong>.</p>
+
+    <p>It is designed to <strong>support and enhance the academy’s teaching</strong>, helping students understand mistakes immediately and practise more efficiently.</p>
+
+    <p>I sincerely thank <strong>Sukhwinder Sir</strong> for his guidance, support, and for enhancing my capabilities. The knowledge, confidence, and direction I received from him made this idea possible.</p>
+
+    <p>With their guidance and support, I believe this platform can become a <strong>valuable resource for the academy and students</strong>.</p>
+
+    <div style=\"text-align:right; margin-top:12px;\"><strong>— Anonymous</strong></div>
+      </div>
+    </section>
+  </div>
+
+  <script src="assets/menu.js"></script>
+</body>
+</html>
