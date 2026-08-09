@@ -6,7 +6,7 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;font-family:"Helvetica
 /* The test runs in an iframe. iOS safe-area variables must be handled by this
    top-level PWA document so the iframe never sits under the status bar or
    leaves the parent's pale background exposed below the navigation. */
-#testFrame{position:fixed;left:0;right:0;top:var(--pwa-safe-top);width:100%;height:calc(100vh - var(--pwa-safe-top) - var(--pwa-safe-bottom));height:calc(100dvh - var(--pwa-safe-top) - var(--pwa-safe-bottom));display:block;border:0;background:#fff}
+#testFrame{position:fixed;left:0;top:var(--pwa-safe-top);width:100%;height:calc(100vh - var(--pwa-safe-top));height:calc(100dvh - var(--pwa-safe-top));display:block;border:0;background:#fff}
 .loading-screen{position:fixed;inset:var(--pwa-safe-top) 0 var(--pwa-safe-bottom);z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:linear-gradient(145deg,#eaf6ff,var(--page-blue-2));color:#153e67}.loader{width:42px;height:42px;border:4px solid rgba(21,62,103,.18);border-top-color:#2877ad;border-radius:50%;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
 .result-screen{position:fixed;inset:var(--pwa-safe-top) 0 var(--pwa-safe-bottom);z-index:60;padding:clamp(12px,3vw,30px);overflow:auto;color:var(--text);background:radial-gradient(circle at 18% 8%,rgba(255,255,255,.86),transparent 31%),linear-gradient(145deg,#eaf6ff 0%,var(--page-blue) 46%,var(--page-blue-2) 100%)}
 .result-card{width:min(960px,100%);margin:auto;border:1px solid var(--border);border-radius:22px;background:linear-gradient(165deg,rgba(247,252,255,.99),rgba(211,234,250,.99));box-shadow:inset 0 1px 0 #fff,0 14px 36px rgba(40,87,126,.18);overflow:hidden}
@@ -27,19 +27,20 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;font-family:"Helvetica
 .pbx-footer a:hover{border-bottom-color:#153e67;}
 @media(max-width:680px){.result-footer{padding:12px 12px 13px}.pbx-footer{font-size:10.5px}.pbx-footer-icon{font-size:14px}}
 
-/* --- v12 iPhone standalone viewport correction ---
-   Do not subtract the bottom safe-area from the iframe height. In iOS
-   standalone mode the dynamic viewport can already be reduced by browser/UI
-   geometry, and subtracting safe insets again leaves a large blue strip.
-   Anchor the frame by edges instead: safe top -> physical bottom. */
+/* --- v13 stable runner viewport sizing ---
+   A fixed iframe is a replaced element: height:auto uses its intrinsic height
+   instead of stretching between top and bottom. Use an explicit dynamic
+   viewport height, subtracting only the top safe inset. This keeps desktop
+   full-height and iPhone PWA clear of the status area without a bottom gap. */
 #testFrame {
   position: fixed !important;
   top: var(--pwa-safe-top) !important;
-  right: 0 !important;
-  bottom: 0 !important;
+  right: auto !important;
+  bottom: auto !important;
   left: 0 !important;
   width: 100% !important;
-  height: auto !important;
+  height: calc(100vh - var(--pwa-safe-top)) !important;
+  height: calc(100dvh - var(--pwa-safe-top)) !important;
   min-height: 0 !important;
   margin: 0 !important;
   border: 0 !important;
@@ -53,14 +54,4 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;font-family:"Helvetica
   right: 0 !important;
   bottom: 0 !important;
   left: 0 !important;
-}
-
-@supports (-webkit-touch-callout: none) {
-  #testFrame {
-    top: env(safe-area-inset-top, 0px) !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    left: 0 !important;
-    height: auto !important;
-  }
 }
