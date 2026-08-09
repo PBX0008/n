@@ -434,7 +434,7 @@ body.night-mode .ai-header {
   border:none;
   background:transparent;
   color:white;
-  font-size:17px;
+  font-size:15px;
   font-weight:700;
   cursor:pointer;
   transition: color 0.2s ease;
@@ -532,8 +532,8 @@ select.ngn-select {
 
 /* MAIN LAYOUT */
 .main{
-  /* 68px desktop top bar + 40px utility strip + 40px fixed lower bar. */
-  height:calc(100vh - 68px - 40px - 40px);
+  /* 68px desktop top bar + 40px utility strip + compact 34px fixed lower bar. */
+  height:calc(100vh - 68px - 40px - 34px);
   display:grid;
   grid-template-columns:1fr 0 0;
 }
@@ -1013,7 +1013,7 @@ body.night-mode .result-title {
 
 /* BOTTOM BAR */
 .bottombar{
-  height:40px;
+  height:34px;
   background:var(--navy);
   padding:0 14px;
   display:flex;
@@ -1037,10 +1037,10 @@ body.night-mode .result-title {
   background:transparent;
   color:white;
   border:none;
-  padding:0 12px;
+  padding:0 10px;
   margin:0;
   cursor:pointer;
-  font-size:17px;
+  font-size:15px;
   font-weight:700;
   text-align:center;
   transition: color 0.2s ease;
@@ -1048,7 +1048,7 @@ body.night-mode .result-title {
 .bottombar button:hover{ color:#ffe45c; background:transparent; }
 .footer-separator{
   width:2px;
-  height:40px;
+  height:34px;
   background:#ffffff;
   display:inline-block;
   margin:0 2px;
@@ -1599,7 +1599,7 @@ body.text-size-3 { --desktop-content-size: 19px; --desktop-content-line: 1.72; }
   /* One scrolling column on phones: result box first, explanation directly below it. */
   .main,
   .main.show-result {
-    height: calc(100dvh - 44px - 28px - 46px);
+    height: calc(100dvh - 44px - 28px - 34px);
     min-height: 0;
     display: block;
     overflow-x: hidden;
@@ -1790,7 +1790,7 @@ body.text-size-3 { --desktop-content-size: 19px; --desktop-content-line: 1.72; }
   .main.show-result #rightPanel {
     display: block;
     padding-top: 6px;
-    padding-bottom: 92px;
+    padding-bottom: 52px;
     border-top: 0;
   }
 
@@ -1805,7 +1805,7 @@ body.text-size-3 { --desktop-content-size: 19px; --desktop-content-line: 1.72; }
     left: 0;
     right: 0;
     bottom: 0;
-    height: 46px;
+    height: 34px;
     padding: 0;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
@@ -1835,8 +1835,8 @@ body.text-size-3 { --desktop-content-size: 19px; --desktop-content-line: 1.72; }
   .mobile-nav-btn {
     width: 100%;
     min-width: 0;
-    height: 46px;
-    padding: 0 10px;
+    height: 34px;
+    padding: 0 8px;
     margin: 0;
     border: 0;
     background: transparent;
@@ -1844,9 +1844,9 @@ body.text-size-3 { --desktop-content-size: 19px; --desktop-content-line: 1.72; }
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 7px;
     cursor: pointer;
-    font-size: 11px;
+    font-size: 10.5px;
     line-height: 1;
     font-weight: 700;
     white-space: nowrap;
@@ -1855,13 +1855,13 @@ body.text-size-3 { --desktop-content-size: 19px; --desktop-content-line: 1.72; }
   .mobile-nav-btn .material-symbols-outlined {
     margin: 0;
     color: #ffffff;
-    font-size: 30px;
+    font-size: 24px;
     line-height: 1;
-    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 30;
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
   }
 
   .mobile-check-btn {
-    font-size: 11px;
+    font-size: 10.5px;
   }
 
   body.night-mode .mobile-topbar,
