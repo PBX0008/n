@@ -1806,7 +1806,7 @@ body.text-size-3 { --desktop-content-size: 19px; --desktop-content-line: 1.72; }
     right: 0;
     bottom: 0;
     height: 46px;
-    padding: 0 0 14px;
+    padding: 0;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     align-items: stretch;
@@ -1835,7 +1835,7 @@ body.text-size-3 { --desktop-content-size: 19px; --desktop-content-line: 1.72; }
   .mobile-nav-btn {
     width: 100%;
     min-width: 0;
-    height: 35px;
+    height: 46px;
     padding: 0 10px;
     margin: 0;
     border: 0;
@@ -1862,19 +1862,6 @@ body.text-size-3 { --desktop-content-size: 19px; --desktop-content-line: 1.72; }
 
   .mobile-check-btn {
     font-size: 11px;
-  }
-
-  .mobile-bottombar::after {
-    content: "";
-    position: absolute;
-    left: 50%;
-    bottom: 5px;
-    width: 124px;
-    height: 5px;
-    transform: translateX(-50%);
-    border-radius: 999px;
-    background: #ffffff;
-    pointer-events: none;
   }
 
   body.night-mode .mobile-topbar,

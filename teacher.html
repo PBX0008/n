@@ -1,109 +1,2437 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <meta name="theme-color" content="#edf5fb" />
-  <title>NCLEX RN — Teacher Console</title>
-  <link rel="manifest" href="manifest.webmanifest" />
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png" />
-  <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,300..700,0..1,-50..200" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/teacher.css" />
-  <script src="assets/auth.js"></script>
-  <script src="assets/haptics.js" defer></script>
-  <script src="assets/pwa.js" defer></script>
-  <script>window.PBXAuth && window.PBXAuth.requireValidAccess();</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,400,0,0" rel="stylesheet">
+<title>TEACHING CONSOLE</title>
+<meta name="theme-color" content="#0067A9">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="NCLEX-RN">
+<script src="assets/auth.js"></script>
+<script>window.PBXAuth && window.PBXAuth.requireValidAccess();</script>
+<script src="assets/haptics.js" defer></script>
+<script src="assets/pwa.js" defer></script>
+<style>
+
+:root {
+  --color-correct: #10b981;
+  --color-incorrect: #ef4444;
+  --color-partial: #eab308;
+  --color-omitted: #6b7280;
+  --current-color: var(--color-correct);
+  --navy: #0067A9;       
+  --navy-light: #7cafe8; 
+  --google-blue: #0066CC;
+  --calc-red: #8b0000;
+  --calc-blue: #004080;
+  --glass: rgba(255, 255, 255, 0.8);
+  --bg-main: #eef3f8;
+  --bg-left: #ffffff;
+  --bg-right: #ffffff;
+  --text-main: #111111;
+  --border-color: #ffffff;
+}
+
+/* Google Material Symbols Icons */
+.material-symbols-outlined,
+.google-icon {
+  font-family: 'Material Symbols Outlined';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 1.1em;
+  line-height: 1;
+  letter-spacing: normal;
+  text-transform: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  word-wrap: normal;
+  direction: ltr;
+  -webkit-font-feature-settings: 'liga';
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: 'liga';
+  vertical-align: -0.18em;
+}
+.google-icon {
+  margin-right: 4px;
+}
+.inline-google-icon {
+  margin-right: 4px;
+  vertical-align: -0.2em;
+}
+.icon-only .google-icon,
+.action-icon-btn .google-icon,
+#calc-close .google-icon,
+.speaker-icon.google-icon {
+  margin-right: 0;
+}
+.status-label .google-icon {
+  margin-left: 4px;
+  margin-right: 0;
+  font-size: 18px;
+}
+.strip-btn > span,
+.bottombar button,
+.result-item,
+.ai-header > span:first-child {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.speaker-icon.google-icon {
+  cursor: pointer;
+  margin-left: 8px;
+  font-size: 1.25em;
+}
+
+/* Enable text selection everywhere by default for questions, explanations, options, and tables */
+body, .left, #rightPanel, .qtext, #question, #explanation, #caseStudyContainer, .option, table, td, th, .tab-content {
+  -webkit-user-select: text;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+
+/* Disable text selection on UI controls and buttons */
+button, .strip-btn, .topbar, .bottombar, .calc-strip, input, select, .material-symbols-outlined, .google-icon {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+*{ box-sizing:border-box; }
+
+body{
+  margin:0;
+  font-family: Helvetica Neue, Arial,  sans-serif;
+  background:#eef3f8;
+  overflow:hidden;
+  transition: background-color 0.5s ease, color 0.5s ease;
+  line-height: 1.6;
+}
+
+/* Night Mode Theme */
+body.night-mode {
+  --navy: #1a1a1a;
+  --navy-light: #161616;
+  --glass: rgba(30, 30, 50, 0.85);
+  --bg-main: #0a0a14;
+  --bg-left: #121212;
+  --bg-right: #0f0f0f;
+  --text-main: #e0e0e0;
+  --border-color: #2a2a2a;
+  background: var(--bg-main);
+}
+
+body.night-mode .topbar,
+body.night-mode .bottombar {
+  background: linear-gradient(180deg, #1d1d1d 0%, #141414 100%);
+  border-bottom-color: #2a2a2a;
+}
+
+body.night-mode .calc-strip {
+  background: linear-gradient(180deg, #1d1d1d 0%, #1a1a1a 100%);
+  border-bottom-color: #2a2a2a;
+  border-left-color: #2a2a2a;
+  border-right-color: #2a2a2a;
+}
+
+body.night-mode .left {
+  background: var(--bg-left);
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+body.night-mode #rightPanel {
+  background: var(--bg-left) !important;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+body.night-mode .divider {
+  background: #666666;
+}
+
+body.night-mode .nav-link {
+  background-color: #1a1a1a;
+  color: #a0a0c0;
+  border-color: #2a2a2a;
+}
+
+body.night-mode .nav-link:hover {
+  background-color: #252525;
+}
+
+body.night-mode .nav-link.active {
+  background-color: #0f0f0f;
+  color: #e0e0e0;
+  border-color: #2a2a2a #2a2a2a #0f0f0f;
+}
+
+body.night-mode .tab-content {
+  background: #121212;
+  border-color: #2a2a2a;
+  color: #e0e0e0;
+}
+
+body.night-mode table th {
+  background-color: #ff6161;
+  color: #e0e0e0;
+}
+
+body.night-mode table td {
+  background: #121212;
+  border-color: #2a2a2a;
+  color: #c0c0c0;
+}
+
+body.night-mode .qtext,
+body.night-mode #question,
+body.night-mode #caseStudyContainer {
+  color: #e0e0e0;
+  padding: 10px;
+}
+
+body.night-mode .ngn-select {
+  background: #1a1a1a;
+  color: #e0e0e0;
+  border-color: #3a3a3a;
+}
+
+body.night-mode .ngn-dropdown-select {
+  background: linear-gradient(to bottom, #1a1a1a 0%, #121212 100%);
+  color: #e0e0e0;
+  border-color: #3a3a3a;
+}
+
+body.night-mode .ngn-element-container {
+  background: linear-gradient(135deg, #1a1a1a 0%, #121212 100%);
+  border-color: #2a2a2a;
+}
+
+body.night-mode .ngn-interactive-table td {
+  background: #121212;
+  border-color: #2a2a2a;
+}
+
+body.night-mode .ngn-interactive-table tr:hover td {
+  background: #1a1a1a;
+}
+
+body.night-mode .strip-separator,
+body.night-mode .footer-separator {
+  background: #3a3a3a;
+}
+
+body.night-mode .option::before {
+  background: #2a2a2a;
+  border-color: #4a4a4a;
+}
+
+body.night-mode #calculator {
+  background: #1a1a1a;
+}
+
+body.night-mode #calc-header {
+  background: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
+  color: #e0e0e0;
+}
+
+body.night-mode #calc-display {
+  background: #0f0f0f;
+  color: #e0e0e0;
+}
+
+body.night-mode .calc-btn {
+  background: #2a2a2a;
+  color: #e0e0e0;
+}
+
+body.night-mode .calc-btn.op {
+  background: #8b0000;
+}
+
+body.night-mode .calc-btn.eq {
+  background: #004080;
+}
+
+body.night-mode ::-webkit-scrollbar {
+  width: 10px;
+}
+
+body.night-mode ::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+body.night-mode ::-webkit-scrollbar-thumb {
+  background: #3a3a3a;
+  border-radius: 5px;
+}
+
+body.night-mode ::-webkit-scrollbar-thumb:hover {
+  background: #4a4a4a;
+}
+
+body.night-mode #aiModal {
+  background: rgba(20, 20, 35, 0.9);
+}
+
+body.night-mode .ai-header {
+  background: linear-gradient(180deg, #1a1a1a 0%, #0f0f0f 100%);
+}
+
+.night-toggle-strip {
+  cursor: pointer;
+  font-size: 16px;
+  opacity: 0.9;
+  transition: opacity 0.3s ease;
+}
+
+.night-toggle-strip:hover {
+  opacity: 0.7;
+}
+
+/* TOP BAR */
+.topbar{
+  height:68px;
+  background:var(--navy);
+  color:white;
+  padding:0 14px;
+  display:grid;
+  grid-template-columns:minmax(260px, 1fr) auto minmax(260px, 1fr);
+  align-items:center;
+  border-bottom:2px solid white;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+.top-left{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  min-width:0;
+  font-size:15px;
+  font-weight:800;
+  white-space:nowrap;
+}
+.top-left-title{
+  display:flex;
+  align-items:center;
+  gap:4px;
+  min-width:0;
+  font-weight:700;
+}
+.top-left-badge{
+  display:none;
+}
+
+@keyframes metalGlare {
+  0% { color: white; text-shadow: 0 0 5px rgba(255, 255, 255, 0.3); }
+  25% { color: #FFD700; text-shadow: 0 0 15px rgba(255, 255, 0, 0.8), 0 0 30px rgba(255, 255, 0, 0.6); }
+  50% { color: white; text-shadow: 0 0 20px rgba(255, 255, 255, 0.9), 0 0 80px rgba(255, 255, 255, 0.7); }
+  75% { color: #FFD700; text-shadow: 0 0 150px rgba(255, 255, 0, 0.8), 0 0 300px rgba(255, 255, 0, 0.6); }
+  100% { color: white; text-shadow: 0 0 5px rgba(255, 255, 255, 0.3); }
+}
+.top-left.glare-active {
+  animation: metalGlare 6s ease-in-out infinite;
+}
+
+@keyframes glarYellowRed {
+  0% { color: inherit; text-shadow: 0 0 2px rgba(255, 255, 0, 0.3); }
+  25% { color: #FFD700; text-shadow: 0 0 10px rgba(255, 255, 0, 0.8), 0 0 20px rgba(255, 215, 0, 0.6); }
+  50% { color: #FFA500; text-shadow: 0 0 15px rgba(255, 165, 0, 0.8), 0 0 25px rgba(255, 140, 0, 0.6); }
+  75% { color: #f8a98c; text-shadow: 0 0 15px rgba(255, 69, 0, 0.8), 0 0 25px rgba(255, 114, 142, 0.644); }
+  100% { color: inherit; text-shadow: 0 0 2px rgba(255, 94, 94, 0.555); }
+}
+
+.pbx-glare {
+  animation: glarYellowRed 3s ease-in-out infinite;
+  font-weight: bold;
+  display: inline-block;
+}
+.top-center{
+  justify-self:center;
+  text-align:center;
+  color:white;
+  font-weight:700;
+  line-height:1.2;
+}
+.top-center .meta-line{
+  font-size:15px;
+  font-weight:700;
+  cursor:pointer;
+}
+.top-center .qid-line{
+  font-size:14px;
+  margin-top:4px;
+  font-weight:700;
+}
+
+#typewriter { display:none; }
+.cursor-blink { animation: blink 0.7s infinite; }
+@keyframes blink { 50% { border-color: transparent; } }
+
+.top-right{
+  justify-self:end;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:5px;
+}
+.status-row{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  font-size:15px;
+  line-height:0.8;
+  color:white;
+  cursor:pointer;
+  padding:1px 0;
+  border:none;
+  font-weight:700;
+  transition: color 0.2s ease;
+}
+.status-label{
+  min-width:72px;
+  text-align:right;
+  font-weight:700;
+}
+.status-value{
+  font-weight:700;
+  white-space:nowrap;
+}
+.status-row:hover{ color:#ffe45c; }
+
+/* CALC STRIP */
+.calc-strip{
+  height:40px;
+  background:var(--navy-light);
+  color:white;
+  padding:0 16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:15px;
+  font-weight:700;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+.calc-left, .calc-right{
+  display:flex;
+  align-items:center;
+  gap:0;
+}
+.calc-center{ display:none; }
+
+.strip-btn{
+  height:auto;
+  display:inline-flex;
+  align-items:center;
+  gap:0;
+  padding:0 12px;
+  border:none;
+  background:transparent;
+  color:white;
+  font-size:17px;
+  font-weight:700;
+  cursor:pointer;
+  transition: color 0.2s ease;
+}
+.strip-btn:hover{ color:#ffe45c; background:transparent; }
+.practice-mode-btn{
+  min-width:112px;
+  justify-content:center;
+  border-left:2px solid #ffffff;
+  margin-left:2px;
+}
+.practice-mode-btn .mode-dot{
+  width:8px;height:8px;border-radius:50%;background:#60d394;display:inline-block;margin-right:7px;box-shadow:0 0 0 2px rgba(255,255,255,.2);
+}
+.practice-mode-btn.untutored .mode-dot{background:#ffd166;}
+body.untutored-mode .check-btn,
+body.untutored-mode .mobile-check-cell{display:none !important;}
+body.untutored-mode .mobile-bottombar{grid-template-columns:1fr 1fr;}
+body.untutored-mode .main:not(.review-active) #rightPanel{display:none !important;}
+body.untutored-mode .main:not(.review-active){grid-template-columns:1fr 0 0 !important;}
+body.review-mode .check-btn,
+body.review-mode .mobile-check-cell{display:none !important;}
+body.review-mode .mobile-bottombar{grid-template-columns:1fr 1fr;}
+body.review-mode #practiceModeBtn,
+body.review-mode #mobilePracticeModeBtn{display:none !important;}
+/* Review is read-only: keep question count, but remove elapsed time from both top bars. */
+body.review-mode .top-right .status-row:first-child,
+body.review-mode .mobile-status-block .mobile-status-row:first-child{display:none !important;}
+.action-icon-btn{ justify-content:center; padding:0 14px; }
+.utility-btn{ font-size:18px; }
+.strip-separator{
+  width:2px;
+  height:40px;
+  background:#ffffff;
+  display:inline-block;
+  margin:0 2px;
+  flex:0 0 2px;
+}
+.hidden-file-input{ display:none !important; }
+.mark-review-btn.is-marked{ color:#ffe45c; }
+
+#questionCounter { font-weight:700; font-size:15px; }
+
+/* CASE STUDY TABS STYLING */
+#caseStudyContainer {
+  margin-bottom: 20px;
+  border-bottom: 4px solid #eef3f8;
+  padding: 15px;
+  display: none;
+  font-size: 16px;
+  line-height: 1.8;
+  color: #333;
+  font-weight: 500;
+}
+.nav-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  padding-left: 0;
+  margin-bottom: 0;
+  list-style: none;
+  border-bottom: 1px solid #dee2e6;
+}
+.nav-item { margin-bottom: -1px; }
+.nav-link {
+  display: block;
+  padding: 8px 16px;
+  border: 1px solid transparent;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  text-decoration: none;
+  color: var(--navy);
+  background-color: #f8f9fa;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: bold;
+  margin-right: 2px;
+}
+.nav-link:hover { border-color: #e9ecef #e9ecef #dee2e6; }
+.nav-link.active {
+  color: #495057;
+  background-color: #fff;
+  border-color: #dee2e6 #dee2e6 #fff;
+}
+.tab-content { padding: 15px; border: 1px solid #dee2e6; border-top: none; font-size: 16px; line-height: 1.8; }
+.tab-pane { display: none; }
+.tab-pane.active { display: block; animation: fadeIn 0.3s; }
+@keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+table { border-collapse: collapse; width: 100%; font-size: 13px; margin: 10px 0; }
+th, td { border: 1px solid #dee2e6; padding: 8px; text-align: left; }
+th { background-color: #f1f3f5; }
+select.ngn-select {
+  padding: 5px; border: 1px solid var(--navy); border-radius: 4px; background: #eef; font-weight: bold; max-width: 100%;
+}
+
+/* MAIN LAYOUT */
+.main{
+  /* 68px desktop top bar + 40px utility strip + 40px fixed lower bar. */
+  height:calc(100vh - 68px - 40px - 40px);
+  display:grid;
+  grid-template-columns:1fr 0 0;
+}
+
+.left, #rightPanel{
+  overflow-y:auto;
+  overflow-x:hidden;
+  padding:24px;
+  padding-bottom: 60px;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+.left{ background:white; }
+#rightPanel{ background:white !important; display: none; }
+
+.divider {
+  height: 100%;
+  width: 1px;
+  background: #888888;
+  user-select: none;
+  pointer-events: none;
+  display: none;
+}
+
+.main.show-result { grid-template-columns: 1fr 1px 1fr; }
+.main.show-result .divider,
+.main.show-result #rightPanel { display: block; }
+
+/* Make images clickable in question/explanation areas */
+.left img, #rightPanel img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 15px 0;
+  cursor: zoom-in;
+  transition: opacity 0.2s;
+}
+.left img:hover, #rightPanel img:hover {
+  opacity: 0.92;
+}
+
+/* ====================================================
+   CUSTOM CONTEXT MENU (HIGHLIGHT & NOTEBOOK)
+   ==================================================== */
+#customContextMenu {
+  display: none;
+  position: fixed;
+  z-index: 99999;
+  background: #ffffff;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  padding: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1e293b;
+  min-width: 180px;
+}
+#customContextMenu.active {
+  display: flex;
+  flex-direction: column;
+}
+.context-menu-item {
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  border-radius: 4px;
+  background: transparent;
+  border: none;
+  width: 100%;
+  text-align: left;
+  color: inherit;
+  font-size: 14px;
+}
+.context-menu-item:hover {
+  background: #f1f5f9;
+}
+body.night-mode #customContextMenu {
+  background: #1e1e1e;
+  border-color: #333;
+  color: #e0e0e0;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+body.night-mode .context-menu-item:hover {
+  background: #2a2a2a;
+}
+
+/* Bright Yellow User Highlight Styling */
+.user-highlight {
+  background-color: #ffff00;
+  color: #111111;
+  padding: 2px 0;
+  border-radius: 2px;
+}
+body.night-mode .user-highlight {
+  background-color: #facc15;
+  color: #111111;
+}
+/* ==================================================== */
+
+/* ====================================================
+   EXHIBIT DISPLAY MODAL (IMAGE ZOOM & SCROLL VIEWER)
+   ==================================================== */
+#exhibitModal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(0, 0, 0, 0.65);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+#exhibitModal.active {
+  display: flex;
+}
+.exhibit-dialog {
+  width: min(1040px, 96vw);
+  height: min(800px, 92vh);
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.35);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 2px solid var(--navy);
+}
+.exhibit-header {
+  background: var(--navy);
+  color: #ffffff;
+  padding: 14px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 600;
+}
+.exhibit-close-btn {
+  background: transparent;
+  border: none;
+  color: #ffffff;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  border-radius: 4px;
+}
+.exhibit-close-btn:hover {
+  background: rgba(255,255,255,0.15);
+}
+.exhibit-body {
+  flex: 1;
+  position: relative;
+  background: #f8fafc;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+}
+.exhibit-body:active {
+  cursor: grabbing;
+}
+.exhibit-img-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  min-width: 100%;
+  min-height: 100%;
+}
+#exhibitImage {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  transition: transform 0.1s ease-out;
+  transform-origin: center center;
+  user-select: none;
+  pointer-events: none;
+}
+.exhibit-footer {
+  background: #ffffff;
+  border-top: 1px solid #e2e8f0;
+  padding: 10px 18px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+}
+.exhibit-btn {
+  background: transparent;
+  border: 1px solid #cbd5e1;
+  color: #334155;
+  padding: 6px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 4px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.2s, border-color 0.2s;
+}
+.exhibit-btn:hover {
+  background: #f1f5f9;
+  border-color: #94a3b8;
+}
+.exhibit-btn .google-icon {
+  font-size: 18px !important;
+  margin: 0 !important;
+}
+
+body.night-mode .exhibit-dialog {
+  background: #121212;
+  border: 2px solid var(--border-color);
+}
+body.night-mode .exhibit-header {
+  background: var(--navy);
+}
+body.night-mode .exhibit-body {
+  background: #0b0b10;
+}
+body.night-mode .exhibit-footer {
+  background: #161616;
+  border-top-color: #2a2a2a;
+}
+body.night-mode .exhibit-btn {
+  background: #222;
+  border-color: #3a3a3a;
+  color: #e0e0e0;
+}
+body.night-mode .exhibit-btn:hover {
+  background: #2a2a2a;
+}
+/* ==================================================== */
+
+.blue-search {
+  color: var(--google-blue);
+  text-decoration: underline;
+  cursor: pointer;
+  font-weight: 600;
+}
+body.night-mode .blue-search { color: #6fa8dc; }
+body.night-mode #explanation { color: #e0e0e0; }
+
+/* Additional text shown below the main explanation */
+.additional-text-box {
+  margin-top: 16px;
+  padding: 14px 16px;
+  background: #f1f3f5;
+  border: 1px solid #d9dee3;
+  border-radius: 7px;
+  color: #000000;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+body.night-mode .additional-text-box {
+  background: #1a1a1a;
+  border: 2px solid #2a2a2a;
+  color: #e0e0e0;
+  box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.4);
+}
+
+.exp-meta {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #dee2e6;
+}
+.exp-topic { margin-bottom: 8px; font-size: 16px; color: #242424; }
+.exp-subject { margin-bottom: 8px; font-size: 14px; color: #888; }
+body.night-mode .exp-topic { color: #888; }
+body.night-mode .exp-subject { color: #666; }
+
+/* OPTIONS */
+.option {
+  border: none !important;
+  padding: 10px 5px 10px 59px;
+  margin-bottom: 8px;
+  cursor: default;
+  position: relative;
+  background: transparent !important;
+  color: #000000;
+  box-shadow: none !important;
+  line-height: 1.3;
+}
+body.night-mode .option {
+  color: #e0e0e0;
+}
+.option::before {
+  content: "";
+  width: 22px;
+  height: 22px;
+  border: 2px solid #ffffff;
+  border-radius: 4px;
+  position: absolute;
+  left: 29px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #ffffff;
+  box-shadow: inset 0 0 0 1px #41414154;
+}
+body.night-mode .option::before {
+  border-color: #41414154;
+  background: #41414154;
+  box-shadow: inset 0 0 0 2px #ffffff;
+}
+.option.selected::before {
+  background: #92c5ff;
+  border-color: #ffffff;
+  box-shadow: inset 0 0 0 1px #41414154, inset 0 0 0 4px #ffffff;
+}
+body.night-mode .option.selected::before {
+  background: #304961;
+  border-color: #000000a4;
+  box-shadow: inset 0 0 0 1px #ffffff, inset 0 0 0 4px #1a1a2e;
+}
+
+.option.correct::after,
+.option.wrong::after {
+  font-family: 'Material Symbols Outlined';
+  position: absolute;
+  left: 0px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 26px;
+  height: 26px;
+  line-height: 26px;
+  text-align: center;
+  font-size: 26px;
+  font-weight: 400;
+}
+.option.correct::after { content: "check"; color: #1bad22; }
+.option.wrong::after { content: "close"; color: #ff2828; }
+
+/* ====================================================
+   VERTICALLY SPACE ADAPTIVE RESULT BOX STYLING (Space-Efficient)
+   ==================================================== */
+#questionResultBox {
+  position: relative;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 16px 20px;
+  border: 2px solid #e2e8f0;
+  box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.08);
+  display: none;
+  margin-top: 15px;
+  overflow: hidden;
+  height: auto;
+}
+
+.border-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+  border-radius: 10px;
+}
+
+.anim-rect {
+  fill: none;
+  stroke: var(--current-color);
+  stroke-width: 3px;
+  opacity: 0;
+}
+
+.anim-rect.animate {
+  animation: borderTrace 0.75s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes borderTrace {
+  0% {
+    stroke-dashoffset: var(--path-length);
+    opacity: 1;
+  }
+  95% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+}
+
+.arrow-marker {
+  fill: var(--current-color);
+}
+
+.result-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: var(--current-color);
+}
+
+.result-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 7px 0;
+  border-bottom: 1px solid var(--current-color);
+  font-size: 14px;
+  color: #1e293b;
+  transition: border-color 0.3s ease;
+}
+
+.result-row:last-child {
+  border-bottom: none;
+}
+
+body.night-mode #questionResultBox {
+  background: #1a1a1a !important;
+  border: 2px solid #2a2a2a !important;
+  box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.4) !important;
+}
+
+body.night-mode .result-row {
+  color: #e0e0e0;
+}
+
+body.night-mode .result-title {
+  color: var(--current-color);
+}
+/* ==================================================== */
+
+/* IN-APP AI POPUP */
+#aiModal {
+  position: fixed;
+  top: 60px;
+  right: -550px;
+  width: 500px;
+  height: 80%;
+  background: var(--glass);
+  backdrop-filter: blur(20px);
+  border-radius: 15px 0 0 15px;
+  box-shadow: -10px 0 30px rgba(0,0,0,0.2);
+  z-index: 20000;
+  transition: right 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(255,255,255,0.3);
+}
+#aiModal.active { right: 0; }
+.ai-header {
+  padding: 15px;
+  background: var(--navy);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  border-radius: 15px 0 0 0;
+  font-weight: bold;
+}
+.ai-body { flex: 1; position: relative; }
+.ai-body iframe { width: 100%; height: 100%; border: none; }
+.ai-loader {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+  text-align: center;
+}
+.spinner {
+  border: 4px solid rgba(255,255,255,0.3);
+  border-top: 4px solid var(--navy);
+  border-radius: 50%;
+  width: 40px; height: 40px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 10px;
+}
+@keyframes spin { 100% { transform: rotate(360deg); } }
+
+/* BOTTOM BAR */
+.bottombar{
+  height:40px;
+  background:var(--navy);
+  padding:0 14px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  z-index:100;
+  font-weight:700;
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+.bottom-left, .bottom-right{
+  display:flex;
+  align-items:center;
+  gap:0;
+}
+.bottombar button{
+  height:auto;
+  background:transparent;
+  color:white;
+  border:none;
+  padding:0 12px;
+  margin:0;
+  cursor:pointer;
+  font-size:17px;
+  font-weight:700;
+  text-align:center;
+  transition: color 0.2s ease;
+}
+.bottombar button:hover{ color:#ffe45c; background:transparent; }
+.footer-separator{
+  width:2px;
+  height:40px;
+  background:#ffffff;
+  display:inline-block;
+  margin:0 2px;
+  flex:0 0 2px;
+}
+.check-btn button{
+  background:var(--navy-light);
+  color:white;
+  border:none;
+  width:120px;
+  padding:8px 0;
+  margin-left:10px;
+  cursor:pointer;
+  font-weight:bold;
+  text-align:center;
+}
+.check-btn { margin-top: 15px; }
+
+/* CALCULATOR — faithful, functional TI-108 replica */
+#calculator {
+  position: fixed;
+  top: 112px;
+  left: 88px;
+  width: min(330px, 92vw);
+  aspect-ratio: 650 / 1093;
+  display: none;
+  z-index: 10000;
+  padding: 0;
+  border: 0;
+  border-radius: 7% 7% 10% 10%;
+  background: transparent !important;
+  box-shadow: 0 18px 34px rgba(9, 29, 62, 0.34);
+  overflow: visible;
+  container-type: inline-size;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.calc-replica-image {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  z-index: 1;
+}
+
+#calc-header {
+  position: absolute;
+  top: 0;
+  left: 3%;
+  right: 3%;
+  height: 36.5%;
+  cursor: grab;
+  z-index: 7;
+  touch-action: none;
+}
+
+#calc-header:active { cursor: grabbing; }
+
+#calc-close {
+  position: absolute;
+  top: 1.2%;
+  right: 1.5%;
+  width: 27px;
+  height: 27px;
+  padding: 0;
+  border: 1px solid rgba(255,255,255,0.75);
+  border-radius: 999px;
+  background: rgba(4, 35, 68, 0.88);
+  color: #ffffff;
+  font-size: 18px;
+  line-height: 25px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  z-index: 12;
+  box-shadow: 0 2px 7px rgba(0,0,0,0.3);
+}
+
+#calc-close:hover { background: rgba(0, 20, 45, 0.98); }
+
+#calc-display {
+  position: absolute;
+  left: 16.15%;
+  top: 8.1%;
+  width: 68.55%;
+  height: 8.45%;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  overflow: hidden;
+  padding: 0 2.3% 0 1%;
+  border: 0;
+  border-radius: 2.2%;
+  background: linear-gradient(180deg, #d8d9cf 0%, #c5c8b9 58%, #b9bead 100%) !important;
+  color: #11170f !important;
+  font-family: "Courier New", "Lucida Console", monospace;
+  font-size: 14cqw;
+  font-weight: 700;
+  letter-spacing: -0.08em;
+  line-height: 1;
+  text-align: right;
+  white-space: nowrap;
+  text-shadow: 0.4px 0 #11170f;
+  box-shadow: inset 0 0 3px rgba(24, 34, 20, 0.35);
+  pointer-events: none;
+}
+
+.calc-key {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  width: var(--w, 16.7%);
+  height: var(--h, 7.35%);
+  z-index: 9;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  border-radius: 13%;
+  background: transparent;
+  color: transparent;
+  cursor: pointer;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.calc-key:hover { background: rgba(255,255,255,0.06); }
+.calc-key:active {
+  background: rgba(0,0,0,0.12);
+  transform: translateY(1px) scale(0.985);
+}
+.calc-key:focus-visible {
+  outline: 2px solid #ffe45c;
+  outline-offset: 2px;
+}
+
+body.night-mode #calculator {
+  background: transparent !important;
+  box-shadow: 0 18px 38px rgba(0,0,0,0.66) !important;
+}
+body.night-mode #calc-header {
+  background: transparent !important;
+  color: transparent !important;
+}
+body.night-mode #calc-display {
+  background: linear-gradient(180deg, #d8d9cf 0%, #c5c8b9 58%, #b9bead 100%) !important;
+  color: #11170f !important;
+}
+
+/* SLIDER & DROPDOWN STYLES */
+.ngn-slider {
+  appearance: none;
+  width: 200px; height: 8px;
+  border-radius: 4px;
+  background: #e0e0e0;
+  outline: none; cursor: pointer;
+}
+.ngn-dropdown-select {
+  min-width: 180px;
+  padding: 10px 35px 10px 12px;
+  font-size: 14px; font-weight: 500;
+  color: #333; background: #fff;
+  border: 2px solid var(--navy); border-radius: 8px;
+  cursor: pointer;
+}
+.ngn-interactive-table { width: 100%; border-collapse: separate; border-spacing: 0 8px; margin: 15px 0; }
+.ngn-interactive-table th { background: var(--navy); color: white; padding: 12px 15px; }
+.ngn-interactive-table td { background: white; padding: 12px 15px; border: 1px solid #dee2e6; }
+
+/* TEXT SIZE POPOVER & NAVIGATOR MODAL */
+.text-size-wrapper { position: relative; display: inline-flex; align-items: center; }
+.text-size-bar {
+  display: none; position: absolute; top: 34px; right: 0; z-index: 25000;
+  background: #ffffff; border: 1px solid #cfd7e3; border-radius: 8px; padding: 5px; gap: 4px;
+}
+.text-size-bar.active { display: inline-flex; }
+.text-size-choice { border: 1px solid #d5dce5; background: #f8fbff; min-width: 34px; height: 30px; cursor: pointer; font-weight: bold; }
+
+/* Desktop/laptop reading-size levels. Phone values remain independently controlled below. */
+body.text-size-0 { --desktop-content-size: 13px; --desktop-content-line: 1.48; }
+body.text-size-1 { --desktop-content-size: 15px; --desktop-content-line: 1.58; }
+body.text-size-2 { --desktop-content-size: 17px; --desktop-content-line: 1.66; }
+body.text-size-3 { --desktop-content-size: 19px; --desktop-content-line: 1.72; }
+
+@media (min-width: 601px) {
+  body.text-size-0 #question,
+  body.text-size-0 #caseStudyContainer,
+  body.text-size-0 #options .option,
+  body.text-size-0 #rightPanel,
+  body.text-size-0 #explanation,
+  body.text-size-0 .tab-content,
+  body.text-size-0 .additional-text-box,
+  body.text-size-1 #question,
+  body.text-size-1 #caseStudyContainer,
+  body.text-size-1 #options .option,
+  body.text-size-1 #rightPanel,
+  body.text-size-1 #explanation,
+  body.text-size-1 .tab-content,
+  body.text-size-1 .additional-text-box,
+  body.text-size-2 #question,
+  body.text-size-2 #caseStudyContainer,
+  body.text-size-2 #options .option,
+  body.text-size-2 #rightPanel,
+  body.text-size-2 #explanation,
+  body.text-size-2 .tab-content,
+  body.text-size-2 .additional-text-box,
+  body.text-size-3 #question,
+  body.text-size-3 #caseStudyContainer,
+  body.text-size-3 #options .option,
+  body.text-size-3 #rightPanel,
+  body.text-size-3 #explanation,
+  body.text-size-3 .tab-content,
+  body.text-size-3 .additional-text-box {
+    font-size: var(--desktop-content-size) !important;
+    line-height: var(--desktop-content-line) !important;
+  }
+
+  body[class*="text-size-"] #question *,
+  body[class*="text-size-"] #caseStudyContainer *,
+  body[class*="text-size-"] #options .option *,
+  body[class*="text-size-"] #explanation .correct-exp,
+  body[class*="text-size-"] #explanation .correct-exp *,
+  body[class*="text-size-"] #explanation .additional-text-box *,
+  body[class*="text-size-"] .tab-content * {
+    font-size: inherit !important;
+    line-height: inherit !important;
+  }
+
+  body[class*="text-size-"] #explanation .exp-title,
+  body[class*="text-size-"] #explanation .exp-title strong,
+  body[class*="text-size-"] #explanation .exp-topic,
+  body[class*="text-size-"] #explanation .exp-subject {
+    font-size: inherit !important;
+    line-height: inherit !important;
+  }
+
+  body[class*="text-size-"] #explanation .speaker-icon {
+    font-size: 1.25em !important;
+    line-height: 1 !important;
+  }
+}
+
+.navigator-modal {
+  display: none; position: fixed; inset: 0; z-index: 24000;
+  background: rgba(0,0,0,0.38); align-items: center; justify-content: center;
+}
+.navigator-modal.active { display: flex; }
+.navigator-panel {
+  width: min(1120px, 98vw); max-height: 88vh; overflow: hidden;
+  background: #ffffff; border-radius: 8px; display: flex; flex-direction: column;
+}
+.navigator-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: var(--navy); color: #fff; font-weight: 700; }
+.navigator-stats { display: none !important; }
+.navigator-legend { display: flex; gap: 14px; padding: 8px 14px; font-size: 12px; border-bottom: 1px solid #edf1f5; }
+.legend-dot { width: 10px; height: 10px; display: inline-block; border-radius: 999px; margin-right: 4px; }
+.legend-dot.done { background:#27ae60; }
+.legend-dot.omitted { background:#d93025; }
+.legend-dot.pending { background:#9aa4af; }
+.navigator-list { overflow: auto; background: #ffffff; }
+.navigator-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.navigator-table th, .navigator-table td { padding: 10px 12px; border-bottom: 1px solid #edf1f5; text-align: left; }
+.navigator-row { cursor: pointer; }
+.navigator-row:hover td { background: #f7fbff; }
+
+
+
+/* ====================================================
+   PHONE-ONLY NCLEX BARS
+   Desktop and tablet layouts remain unchanged.
+   ==================================================== */
+.mobile-topbar,
+.mobile-calc-strip,
+.mobile-bottombar {
+  display: none;
+}
+
+@media (max-width: 600px) {
+  html,
+  body {
+    width: 100%;
+    height: 100%;
+    min-height: 100%;
+  }
+
+  body {
+    overflow: hidden;
+    background: var(--bg-main);
+    --mobile-content-size: 14px;
+    --mobile-content-line: 1.52;
+  }
+
+  /* Mobile reading size is intentionally compact and remains adjustable from the text button. */
+  body.text-size-0 { --mobile-content-size: 12.5px; --mobile-content-line: 1.46; }
+  body.text-size-1 { --mobile-content-size: 14px;   --mobile-content-line: 1.52; }
+  body.text-size-2 { --mobile-content-size: 16px;   --mobile-content-line: 1.56; }
+  body.text-size-3 { --mobile-content-size: 18px;   --mobile-content-line: 1.60; }
+
+  /* Preserve the original desktop/tablet bars and replace them only on phones. */
+  body > .topbar,
+  body > .calc-strip,
+  body > .bottombar {
+    display: none !important;
+  }
+
+  .mobile-topbar,
+  .mobile-calc-strip,
+  .mobile-bottombar {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+
+  .mobile-topbar {
+    height: 44px;
+    flex: 0 0 44px;
+    padding: 3px 4px 3px 4px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 6px;
+    color: #ffffff;
+    background: var(--navy);
+    border-bottom: 1px solid #ffffff;
+  }
+
+  .mobile-heading-block {
+    min-width: 0;
+    align-self: center;
+    cursor: pointer;
+  }
+
+  .mobile-app-title {
+    margin: 0;
+    color: #ffffff;
+    font-size: 14px;
+    line-height: 1;
+    font-weight: 700;
+    letter-spacing: 0;
+    white-space: nowrap;
+  }
+
+  .mobile-qid-line {
+    min-width: 0;
+    margin-top: 2px;
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    color: #ffffff;
+    font-size: 9.5px;
+    line-height: 1;
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  #mobileQidDisplay {
+    flex: 0 0 auto;
+    font-weight: 700;
+  }
+
+  #mobileTestMetaLine {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .mobile-status-block {
+    display: grid;
+    align-content: center;
+    gap: 1px;
+  }
+
+  .mobile-status-row {
+    min-height: 16px;
+    display: grid;
+    grid-template-columns: 18px auto;
+    align-items: center;
+    column-gap: 3px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #ffffff;
+    cursor: pointer;
+    font: inherit;
+  }
+
+  .mobile-status-row .material-symbols-outlined {
+    width: 18px;
+    height: 16px;
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 17px;
+    line-height: 1;
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 18;
+  }
+
+  .mobile-status-value {
+    min-width: 3px;
+    color: #ffffff;
+    font-size: 10.5px;
+    line-height: .6;
+    font-weight: 700;
+    text-align: left;
+    white-space: nowrap;
+  }
+
+  .mobile-calc-strip {
+    height: 28px;
+    flex: 0 0 28px;
+    padding: 0 7px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: #ffffff;
+    background: var(--navy-light);
+  }
+
+  .mobile-strip-group {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 3px;
+  }
+
+  .mobile-text-size-wrapper {
+    position: relative;
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .mobile-text-size-bar {
+    display: none;
+    position: absolute;
+    z-index: 500;
+    top: 31px;
+    right: -42px;
+    padding: 5px;
+    gap: 4px;
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid #cfd7e3;
+    border-radius: 7px;
+    box-shadow: 0 5px 16px rgba(0,0,0,0.16);
+  }
+
+  .mobile-text-size-bar.active {
+    display: inline-flex;
+  }
+
+  .mobile-text-size-bar button {
+    min-width: 32px;
+    height: 30px;
+    padding: 0;
+    border: 1px solid #d5dce5;
+    border-radius: 3px;
+    background: #f8fbff;
+    color: #111111;
+    cursor: pointer;
+    font-weight: 700;
+  }
+
+  .mobile-text-size-bar button:nth-child(1) { font-size: 12px; }
+  .mobile-text-size-bar button:nth-child(2) { font-size: 14px; }
+  .mobile-text-size-bar button:nth-child(3) { font-size: 16px; }
+  .mobile-text-size-bar button:nth-child(4) { font-size: 18px; }
+
+  body.night-mode .mobile-text-size-bar {
+    background: #1a1a1a;
+    border-color: #3a3a3a;
+  }
+
+  body.night-mode .mobile-text-size-bar button {
+    background: #252525;
+    border-color: #444444;
+    color: #ffffff;
+  }
+
+  .mobile-icon-btn {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: #ffffff;
+    cursor: pointer;
+  }
+
+  .mobile-mode-btn {
+    width:auto;
+    min-width:66px;
+    padding:0 5px;
+    gap:3px;
+    font-size:9px;
+    font-weight:800;
+    line-height:1;
+  }
+
+  .mobile-mode-btn .mode-dot {
+    width:7px;height:7px;border-radius:50%;background:#60d394;display:inline-block;
+  }
+
+  .mobile-mode-btn.untutored .mode-dot { background:#ffd166; }
+
+  .mobile-icon-btn .material-symbols-outlined {
+    width: 26px;
+    height: 26px;
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+    font-size: 22px;
+    line-height: 1;
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 22;
+    text-shadow: 0 0 1px rgba(255,255,255,0.95), 0 1px 1px rgba(0,0,0,0.18);
+  }
+
+  .mobile-icon-btn:active,
+  .mobile-status-row:active,
+  .mobile-nav-btn:active {
+    opacity: 0.72;
+  }
+
+  .mobile-mark-review-btn.is-marked {
+    color: #ffe45c;
+  }
+
+  .mobile-mark-review-btn.is-marked .material-symbols-outlined {
+    color: #ffe45c;
+    font-variation-settings: "FILL" 1, "wght" 400, "GRAD" 0, "opsz" 22;
+  }
+
+  /* One scrolling column on phones: result box first, explanation directly below it. */
+  .main,
+  .main.show-result {
+    height: calc(100dvh - 44px - 28px - 46px);
+    min-height: 0;
+    display: block;
+    overflow-x: hidden;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    background: var(--bg-left);
+  }
+
+  .left,
+  #rightPanel {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    padding: 12px 8px;
+    background: var(--bg-left) !important;
+    box-shadow: none !important;
+  }
+
+  .left {
+    padding-bottom: 14px;
+  }
+
+  /* Compact mobile question and explanation typography. Bar text is not affected. */
+  #question,
+  #caseStudyContainer,
+  #options .option,
+  #rightPanel,
+  #explanation,
+  .tab-content {
+    font-size: var(--mobile-content-size) !important;
+    line-height: var(--mobile-content-line) !important;
+  }
+
+  #question p,
+  #question div,
+  #question span,
+  #question li,
+  #caseStudyContainer p,
+  #caseStudyContainer div,
+  #caseStudyContainer span,
+  #caseStudyContainer li,
+  #options .option > *,
+  #explanation .correct-exp,
+  #explanation .correct-exp p,
+  #explanation .correct-exp div,
+  #explanation .correct-exp span,
+  #explanation .correct-exp li,
+  .tab-content p,
+  .tab-content div,
+  .tab-content span,
+  .tab-content li,
+  .tab-content td,
+  .tab-content th {
+    font-size: inherit !important;
+    line-height: inherit !important;
+  }
+
+  #question,
+  #caseStudyContainer,
+  #explanation {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  #options {
+    margin-top: 8px;
+  }
+
+  #options .option {
+    padding: 7px 4px 7px 49px;
+    margin-bottom: 4px;
+  }
+
+  /* Compact mobile slots: status icon, 3px gap, then selection box. */
+  #options .option::before {
+    width: 19px;
+    height: 19px;
+    left: 23px;
+    border-width: 1.5px;
+  }
+
+  /* Phone view: restore the prior compact correct/wrong indicators. */
+  #options .option.correct::after,
+  #options .option.wrong::after {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    line-height: 20px;
+    font-family: 'Material Symbols Outlined';
+    font-size: 20px;
+    font-weight: 400;
+    font-style: normal;
+    letter-spacing: normal;
+    text-transform: none;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+  }
+
+  #options .option.correct::after {
+    content: "check" !important;
+    color: #1bad22;
+  }
+
+  #options .option.wrong::after {
+    content: "close" !important;
+    color: #ff2828;
+  }
+
+  /* Keep the result box in normal document order, directly below the options. */
+  .main.show-result .left {
+    display: block;
+  }
+
+  .main.show-result #questionResultBox {
+    display: block !important;
+    width: 100%;
+    margin: 0 0 10px;
+    padding: 7px 8px;
+    border-width: 1px;
+    border-radius: 7px;
+    box-shadow: none;
+  }
+
+  .main.show-result #questionResultBox .result-title {
+    margin: 0 0 3px;
+    font-size: 14px;
+    line-height: 1.15;
+  }
+
+  .main.show-result #questionResultBox .result-row {
+    width: 100%;
+    min-width: 0;
+    gap: 5px;
+    padding: 3px 0;
+    border-bottom-width: 1px;
+    font-size: 11.5px;
+    line-height: 1.15;
+  }
+
+  .main.show-result #questionResultBox .result-row span:first-child {
+    min-width: 0;
+  }
+
+  .main.show-result #questionResultBox .result-row span:last-child {
+    flex: 0 0 auto;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .main.show-result #questionResultBox .border-svg {
+    border-radius: 7px;
+  }
+
+  .additional-text-box {
+    margin-top: 10px;
+    padding: 9px 10px;
+    font-size: var(--mobile-content-size);
+    line-height: var(--mobile-content-line);
+  }
+
+  .exp-meta {
+    margin-top: 12px;
+    padding-top: 9px;
+  }
+
+  .exp-topic,
+  .exp-subject {
+    margin-bottom: 5px;
+    font-size: calc(var(--mobile-content-size) - 1px);
+  }
+
+  .main .divider,
+  .main.show-result .divider {
+    display: none !important;
+  }
+
+  .main #rightPanel {
+    display: none;
+  }
+
+  .main.show-result #rightPanel {
+    display: block;
+    padding-top: 6px;
+    padding-bottom: 92px;
+    border-top: 0;
+  }
+
+  /* Check is positioned in the fixed mobile bar, matching the supplied phone view. */
+  .check-btn {
+    display: none !important;
+  }
+
+  .mobile-bottombar {
+    position: fixed;
+    z-index: 300;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 46px;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    align-items: stretch;
+    background: var(--navy);
+    color: #ffffff;
+  }
+
+  .mobile-nav-cell {
+    min-width: 0;
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+  }
+
+  .mobile-nav-cell + .mobile-nav-cell::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: rgba(255,255,255,0.88);
+  }
+
+  .mobile-nav-btn {
+    width: 100%;
+    min-width: 0;
+    height: 46px;
+    padding: 0 10px;
+    margin: 0;
+    border: 0;
+    background: transparent;
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 11px;
+    line-height: 1;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .mobile-nav-btn .material-symbols-outlined {
+    margin: 0;
+    color: #ffffff;
+    font-size: 30px;
+    line-height: 1;
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 30;
+  }
+
+  .mobile-check-btn {
+    font-size: 11px;
+  }
+
+  body.night-mode .mobile-topbar,
+  body.night-mode .mobile-bottombar {
+    background: linear-gradient(180deg, #1d1d1d 0%, #141414 100%);
+  }
+
+  body.night-mode .mobile-calc-strip {
+    background: #161616;
+  }
+
+  #calculator {
+    top: 84px;
+    left: calc(50% - min(165px, 46vw));
+    transform: none;
+  }
+
+  #aiModal {
+    top: 80px;
+    width: min(100vw, 500px);
+    height: calc(100dvh - 126px);
+  }
+}
+
+
+
+/* ====================================================
+   TEACHING CONSOLE — test-screen shell with inline QID search
+   ==================================================== */
+body.teacher-console-page {
+  padding-top: env(safe-area-inset-top, 0px);
+  background: var(--navy);
+}
+
+/* Top strip: centered title with current QID + question-pack name below it. */
+.teacher-console-page .topbar {
+  grid-template-columns: 1fr auto 1fr;
+}
+.teacher-console-page .top-left,
+.teacher-console-page .top-right {
+  min-width: 0;
+  min-height: 1px;
+}
+.teacher-title-stack,
+.teacher-mobile-title-stack {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.teacher-console-title {
+  color: #fff;
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: .035em;
+  line-height: 1;
+  white-space: nowrap;
+}
+.teacher-question-meta {
+  min-height: 14px;
+  max-width: min(68vw, 720px);
+  margin-top: 5px;
+  overflow: hidden;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Calculator strip stays visually blank except for the QID box + Search at far left. */
+.teacher-console-page .calc-strip {
+  justify-content: flex-start;
+}
+.teacher-inline-search {
+  height: 100%;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.teacher-inline-qid {
+  width: 150px;
+  height: 28px;
+  padding: 0 9px;
+  border: 1px solid rgba(255,255,255,.85);
+  border-radius: 3px;
+  outline: none;
+  background: #fff;
+  color: #111;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 28px;
+}
+.teacher-inline-qid::placeholder { color: #65717d; font-weight: 600; }
+.teacher-inline-qid:focus {
+  border-color: #fff;
+  box-shadow: 0 0 0 2px rgba(0,103,169,.25);
+}
+.teacher-inline-search-btn {
+  height: 28px;
+  min-width: 70px;
+  padding: 0 11px;
+  border: 1px solid rgba(255,255,255,.9);
+  border-radius: 3px;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  font-family: "Helvetica Neue", Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 26px;
+}
+.teacher-inline-search-btn:hover,
+.teacher-inline-search-btn:focus-visible {
+  background: rgba(255,255,255,.12);
+}
+.teacher-inline-search-btn:disabled { opacity: .65; cursor: wait; }
+.teacher-inline-qid.not-found {
+  border-color: #ffd2d2;
+  box-shadow: 0 0 0 2px rgba(180,35,24,.25);
+}
+
+.teacher-console-page .main,
+.teacher-console-page .main.show-result {
+  height: calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 68px - 40px - 40px);
+}
+
+/* No test scoring box in the teacher viewer. */
+.teacher-console-page #questionResultBox {
+  display: none !important;
+}
+
+/* Bottom strip contains Back only; Search lives in the calculator strip. */
+.teacher-console-page .bottombar {
+  height: calc(40px + env(safe-area-inset-bottom, 0px));
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.teacher-console-page .bottom-left {
+  min-width: 120px;
+}
+.teacher-console-page .teacher-bottom-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Question area is blank until a QID is selected. */
+.teacher-console-page .left,
+.teacher-console-page #rightPanel {
+  background: #fff !important;
+}
+.teacher-console-page #question:empty,
+.teacher-console-page #options:empty,
+.teacher-console-page #explanation:empty {
+  min-height: 0;
+}
+
+@media (max-width: 600px) {
+  body.teacher-console-page {
+    --mobile-content-size: 14px;
+    --mobile-content-line: 1.52;
+  }
+
+  .teacher-console-page .mobile-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
+    padding: 2px 6px;
+  }
+  .teacher-mobile-title-stack { width: 100%; }
+  .teacher-mobile-title {
+    color: #fff;
+    font-size: 13px;
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: .025em;
+    white-space: nowrap;
+  }
+  .teacher-mobile-meta {
+    min-height: 10px;
+    width: 100%;
+    margin-top: 3px;
+    overflow: hidden;
+    color: #fff;
+    font-size: 9.5px;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* QID input + Search are placed at the far left of the mobile calculator strip. */
+  .teacher-console-page .mobile-calc-strip {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 28px;
+    padding: 0 5px;
+  }
+  .teacher-console-page .teacher-inline-search {
+    gap: 4px;
+  }
+  .teacher-console-page .teacher-inline-qid {
+    width: 108px;
+    height: 22px;
+    padding: 0 7px;
+    border-radius: 2px;
+    font-size: 11px;
+    line-height: 22px;
+  }
+  .teacher-console-page .teacher-inline-search-btn {
+    height: 22px;
+    min-width: 54px;
+    padding: 0 7px;
+    border-radius: 2px;
+    font-size: 10.5px;
+    line-height: 20px;
+  }
+
+  .teacher-console-page .main,
+  .teacher-console-page .main.show-result {
+    height: calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px) - 44px - 28px - 46px);
+  }
+
+  .teacher-console-page .main.show-result .left {
+    padding-bottom: 6px;
+  }
+  .teacher-console-page .main.show-result #rightPanel {
+    padding-top: 6px;
+    padding-bottom: 24px;
+  }
+
+  .teacher-console-page .mobile-bottombar {
+    grid-template-columns: 1fr;
+    height: calc(46px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  .teacher-console-page .mobile-nav-cell {
+    justify-content: flex-start;
+  }
+  .teacher-console-page .mobile-nav-btn {
+    height: 46px;
+  }
+  .teacher-console-page .mobile-nav-btn .material-symbols-outlined {
+    font-size: 27px;
+  }
+}
+</style>
 </head>
-<body>
-  <main class="teacher-shell">
-    <header class="teacher-topbar">
-      <a class="back-btn" href="main.html" aria-label="Back to question selection">
-        <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
-        <span>Question Selection</span>
-      </a>
-      <div class="teacher-title">
-        <span class="material-symbols-outlined" aria-hidden="true">school</span>
-        <strong>TEACHER CONSOLE</strong>
-      </div>
-      <div class="bank-status" id="bankStatus" aria-live="polite">Question bank ready to search</div>
-    </header>
+<body class="teacher-console-page text-size-1">
 
-    <section class="search-console" aria-label="Question ID lookup">
-      <label for="qidInput">QUESTION ID</label>
-      <div class="search-row">
-        <div class="qid-entry">
-          <span class="qid-prefix">QID</span>
-          <input id="qidInput" type="text" inputmode="numeric" autocomplete="off" spellcheck="false" placeholder="Enter question ID" aria-describedby="searchHint" />
-        </div>
-        <button id="searchBtn" type="button">
-          <span class="material-symbols-outlined" aria-hidden="true">search</span>
-          <span>SHOW QUESTION</span>
-        </button>
-      </div>
-      <p id="searchHint">Enter a Question ID and press Enter. The console searches all question packs.</p>
-      <div class="search-message" id="searchMessage" role="status" aria-live="polite"></div>
-    </section>
+<!-- PHONE TOP STRIP: title + loaded question metadata -->
+<div class="mobile-topbar" aria-label="Teaching console title">
+  <div class="teacher-mobile-title-stack">
+    <div class="teacher-mobile-title">TEACHING CONSOLE</div>
+    <div id="teacherMetaMobile" class="teacher-mobile-meta"></div>
+  </div>
+</div>
 
-    <section class="empty-state" id="emptyState">
-      <span class="material-symbols-outlined" aria-hidden="true">manage_search</span>
-      <h1>Direct Question Review</h1>
-      <p>Enter any Question ID above to display the question, answer choices, correct answer, and complete explanation.</p>
-    </section>
+<!-- DESKTOP TOP STRIP: title + loaded question metadata -->
+<div class="topbar">
+  <div class="top-left"></div>
+  <div class="teacher-title-stack">
+    <div class="teacher-console-title">TEACHING CONSOLE</div>
+    <div id="teacherMetaDesktop" class="teacher-question-meta"></div>
+  </div>
+  <div class="top-right"></div>
+</div>
 
-    <article class="question-console" id="questionConsole" hidden>
-      <header class="question-meta-bar">
-        <div>
-          <span class="meta-label">QUESTION ID</span>
-          <strong id="displayQid">QID: ----</strong>
-        </div>
-        <div class="meta-tags">
-          <span id="packTag">Pack</span>
-          <span id="subjectTag">Subject</span>
-          <span id="topicTag">Topic</span>
-        </div>
-      </header>
+<!-- Calculator bar: QID field and Search at the far left; remainder intentionally blank -->
+<div class="mobile-calc-strip" aria-label="Question ID search">
+  <div class="teacher-inline-search">
+    <input id="teacherQidInputMobile" class="teacher-inline-qid" type="text" inputmode="numeric" autocomplete="off" spellcheck="false" aria-label="Question ID" placeholder="QID">
+    <button id="teacherSearchBtnMobile" class="teacher-inline-search-btn" type="button">Search</button>
+  </div>
+</div>
+<div class="calc-strip" aria-label="Question ID search">
+  <div class="teacher-inline-search">
+    <input id="teacherQidInput" class="teacher-inline-qid" type="text" inputmode="numeric" autocomplete="off" spellcheck="false" aria-label="Question ID" placeholder="Enter QID">
+    <button id="teacherSearchBtn" class="teacher-inline-search-btn" type="button">Search</button>
+  </div>
+</div>
 
-      <div class="question-layout">
-        <section class="question-pane">
-          <div class="section-heading">
-            <span class="material-symbols-outlined" aria-hidden="true">quiz</span>
-            <h2>Question</h2>
-          </div>
-          <div class="question-text" id="questionText"></div>
+<!-- Same question / options / explanation structure used by test.html -->
+<div class="main show-result">
+  <div class="left">
+    <div id="caseStudyContainer"></div>
+    <div class="qtext" id="question"></div>
+    <div id="options"></div>
+    <div id="questionResultBox" aria-hidden="true"></div>
+  </div>
+  <div id="dividerLine" class="divider"></div>
+  <div id="rightPanel" class="right">
+    <div id="explanation"></div>
+  </div>
+</div>
 
-          <div class="section-heading options-heading">
-            <span class="material-symbols-outlined" aria-hidden="true">checklist</span>
-            <h2>Answer Options</h2>
-          </div>
-          <div class="teacher-options" id="answerOptions"></div>
-        </section>
+<!-- PHONE BOTTOM STRIP: Back only -->
+<div class="mobile-bottombar" aria-label="Teaching console navigation">
+  <div class="mobile-nav-cell">
+    <button class="mobile-nav-btn" type="button" onclick="teacherBack()">
+      <span class="material-symbols-outlined" aria-hidden="true">arrow_back</span>
+      <span>Back</span>
+    </button>
+  </div>
+</div>
 
-        <aside class="answer-pane">
-          <section class="correct-answer-card">
-            <div class="correct-answer-title">
-              <span class="material-symbols-outlined" aria-hidden="true">verified</span>
-              <span>Correct Answer</span>
-            </div>
-            <strong id="correctAnswerText">—</strong>
-            <div id="correctAnswerChoices" class="correct-choice-summary"></div>
-          </section>
+<!-- DESKTOP BOTTOM STRIP: Back only -->
+<div class="bottombar">
+  <div class="bottom-left">
+    <button class="teacher-bottom-btn" type="button" onclick="teacherBack()">
+      <span class="material-symbols-outlined google-icon" aria-hidden="true">arrow_back</span> Back
+    </button>
+  </div>
+  <div class="bottom-right"></div>
+</div>
 
-          <section class="explanation-card">
-            <div class="section-heading">
-              <span class="material-symbols-outlined" aria-hidden="true">menu_book</span>
-              <h2>Explanation</h2>
-            </div>
-            <div class="explanation-text" id="explanationText"></div>
-            <div class="additional-text" id="additionalText" hidden></div>
-          </section>
-        </aside>
-      </div>
-    </article>
-  </main>
+<!-- Same image viewer behaviour for question/explanation images -->
+<div id="exhibitModal" onclick="if(event.target === this) closeExhibit()">
+  <div class="exhibit-dialog">
+    <div class="exhibit-header">
+      <span>Exhibit: Display</span>
+      <button class="exhibit-close-btn" type="button" onclick="closeExhibit()"><span class="material-symbols-outlined google-icon" aria-hidden="true">close</span></button>
+    </div>
+    <div class="exhibit-body" id="exhibitScrollBody">
+      <div class="exhibit-img-wrap"><img id="exhibitImage" src="" alt="Exhibit Image"></div>
+    </div>
+    <div class="exhibit-footer">
+      <button class="exhibit-btn" type="button" onclick="zoomExhibitIn()"><span class="material-symbols-outlined google-icon" aria-hidden="true">zoom_in</span> Zoom In</button>
+      <button class="exhibit-btn" type="button" onclick="zoomExhibitOut()"><span class="material-symbols-outlined google-icon" aria-hidden="true">zoom_out</span> Zoom Out</button>
+      <button class="exhibit-btn" type="button" onclick="resetExhibitZoom()"><span class="material-symbols-outlined google-icon" aria-hidden="true">restart_alt</span> Reset</button>
+      <button class="exhibit-btn" type="button" onclick="closeExhibit()"><span class="material-symbols-outlined google-icon" aria-hidden="true">close</span> Close</button>
+    </div>
+  </div>
+</div>
 
-  <script src="assets/teacher.js"></script>
+<script>
+(() => {
+  'use strict';
+
+  const desktopInput = document.getElementById('teacherQidInput');
+  const mobileInput = document.getElementById('teacherQidInputMobile');
+  const desktopBtn = document.getElementById('teacherSearchBtn');
+  const mobileBtn = document.getElementById('teacherSearchBtnMobile');
+  const metaDesktop = document.getElementById('teacherMetaDesktop');
+  const metaMobile = document.getElementById('teacherMetaMobile');
+  const questionEl = document.getElementById('question');
+  const optionsEl = document.getElementById('options');
+  const explanationEl = document.getElementById('explanation');
+  const mainEl = document.querySelector('.main');
+
+  let bankPromise = null;
+  let questionIndex = new Map();
+  let currentZoom = 1;
+
+  const normaliseQid = value => String(value ?? '')
+    .trim()
+    .replace(/^qid\s*[:#-]?\s*/i, '')
+    .replace(/\s+/g, '');
+
+  function listFrom(data) {
+    if (Array.isArray(data)) return data;
+    if (data && Array.isArray(data.questionList)) return data.questionList;
+    return [];
+  }
+
+  function clearNotFoundState() {
+    [desktopInput, mobileInput].forEach(el => {
+      if (!el) return;
+      el.classList.remove('not-found');
+      el.removeAttribute('aria-invalid');
+    });
+  }
+
+  function clearSearchBoxes() {
+    if (desktopInput) desktopInput.value = '';
+    if (mobileInput) mobileInput.value = '';
+    clearNotFoundState();
+  }
+
+  function setLoadedMeta(qid, packName) {
+    const line = qid ? `QID: ${qid}${packName ? `  •  ${packName}` : ''}` : '';
+    if (metaDesktop) metaDesktop.textContent = line;
+    if (metaMobile) metaMobile.textContent = line;
+  }
+
+  function markNotFound(input) {
+    if (!input) return;
+    input.classList.add('not-found');
+    input.setAttribute('aria-invalid', 'true');
+    input.focus();
+    input.select();
+  }
+
+  async function buildBank() {
+    if (bankPromise) return bankPromise;
+    bankPromise = (async () => {
+      const catalogResponse = await fetch('data/tests.json', { cache: 'no-store' });
+      if (!catalogResponse.ok) throw new Error('Question catalog unavailable');
+      const catalog = await catalogResponse.json();
+      const packs = Array.isArray(catalog) ? catalog : [];
+      const results = await Promise.allSettled(packs.map(async pack => {
+        const response = await fetch(pack.file, { cache: 'no-store' });
+        if (!response.ok) throw new Error(pack.file);
+        const data = await response.json();
+        return { pack, questions: listFrom(data) };
+      }));
+
+      const index = new Map();
+      results.forEach(result => {
+        if (result.status !== 'fulfilled') return;
+        result.value.questions.forEach(q => {
+          const key = normaliseQid(q.questionId ?? q.questionIndex);
+          if (key && !index.has(key)) index.set(key, { question: q, pack: result.value.pack });
+        });
+      });
+      questionIndex = index;
+      return questionIndex;
+    })();
+    return bankPromise;
+  }
+
+  function formatExplanation(value) {
+    if (!value) return '';
+    let text = String(value).replace(/\((Option|Options)[^)]+\)/gi, match => `<span class="opt-gap"><b>${match}</b></span>`);
+    text = text.replace(/<a[^>]*>(.*?)<\/a>/gi, '$1');
+    return text;
+  }
+
+  function correctIndexes(q) {
+    return String(q.correctAnswer || '')
+      .split(',')
+      .map(v => Number(v.trim()) - 1)
+      .filter(v => Number.isInteger(v) && v >= 0);
+  }
+
+  function renderQuestion(record) {
+    const q = record.question;
+    const correct = new Set(correctIndexes(q));
+    const choices = Array.isArray(q.answerChoiceList) ? q.answerChoiceList : [];
+
+    questionEl.innerHTML = q.questionText || '';
+    optionsEl.replaceChildren();
+
+    choices.forEach((choice, index) => {
+      const row = document.createElement('div');
+      row.className = 'option';
+      if (correct.has(index)) row.classList.add('selected', 'correct');
+      row.innerHTML = choice && typeof choice.choice === 'string' ? choice.choice : '';
+      optionsEl.appendChild(row);
+    });
+
+    const additional = typeof q.additionalText === 'string' ? q.additionalText.trim() : '';
+    const additionalBox = additional ? `<div class="additional-text-box">${formatExplanation(additional)}</div>` : '';
+    explanationEl.innerHTML = `
+      <div class="exp-title"><strong>Explanation</strong></div>
+      <div class="correct-exp">${formatExplanation(q.explanationText || '')}</div>
+      ${additionalBox}
+      <div class="exp-meta">
+        <div class="exp-topic">${q.topic || 'General'}</div>
+        <div class="exp-subject">NCSBN ${q.subject || 'General'}</div>
+      </div>`;
+
+    const loadedQid = String(q.questionId ?? q.questionIndex ?? '').trim();
+    const packName = String(record.pack?.title ?? record.pack?.name ?? record.pack?.id ?? '').trim();
+    setLoadedMeta(loadedQid, packName);
+    clearSearchBoxes();
+
+    mainEl.classList.add('show-result');
+    const left = document.querySelector('.left');
+    const right = document.getElementById('rightPanel');
+    if (left) left.scrollTop = 0;
+    if (right) right.scrollTop = 0;
+    mainEl.scrollTop = 0;
+
+    document.title = `TEACHING CONSOLE — QID ${loadedQid}`;
+  }
+
+  async function searchQuestion(input, button) {
+    const key = normaliseQid(input?.value);
+    if (!key) {
+      input?.focus();
+      return;
+    }
+
+    clearNotFoundState();
+    [desktopBtn, mobileBtn].forEach(btn => { if (btn) btn.disabled = true; });
+    if (button) button.textContent = '...';
+
+    try {
+      const index = await buildBank();
+      const record = index.get(key);
+      if (!record) {
+        markNotFound(input);
+        return;
+      }
+      renderQuestion(record);
+    } catch (error) {
+      console.error(error);
+      bankPromise = null;
+      markNotFound(input);
+    } finally {
+      [desktopBtn, mobileBtn].forEach(btn => {
+        if (!btn) return;
+        btn.disabled = false;
+        btn.textContent = 'Search';
+      });
+    }
+  }
+
+  function bindSearch(input, button) {
+    if (!input || !button) return;
+    input.addEventListener('input', clearNotFoundState);
+    input.addEventListener('keydown', event => {
+      if (event.key === 'Enter') {
+        event.preventDefault();
+        searchQuestion(input, button);
+      }
+    });
+    button.addEventListener('click', () => searchQuestion(input, button));
+  }
+
+  bindSearch(desktopInput, desktopBtn);
+  bindSearch(mobileInput, mobileBtn);
+
+  window.teacherBack = function() {
+    window.location.href = 'main.html';
+  };
+
+  /* Reuse the test-screen image viewer interaction. */
+  window.openExhibit = function(src) {
+    const exhibit = document.getElementById('exhibitModal');
+    const img = document.getElementById('exhibitImage');
+    if (!exhibit || !img || !src) return;
+    img.src = src;
+    currentZoom = 1;
+    img.style.transform = 'scale(1)';
+    exhibit.classList.add('active');
+  };
+  window.closeExhibit = function() { document.getElementById('exhibitModal')?.classList.remove('active'); };
+  window.zoomExhibitIn = function() { currentZoom = Math.min(4, currentZoom + .25); applyZoom(); };
+  window.zoomExhibitOut = function() { currentZoom = Math.max(.5, currentZoom - .25); applyZoom(); };
+  window.resetExhibitZoom = function() {
+    currentZoom = 1; applyZoom();
+    const body = document.getElementById('exhibitScrollBody');
+    if (body) { body.scrollTop = 0; body.scrollLeft = 0; }
+  };
+  function applyZoom() {
+    const img = document.getElementById('exhibitImage');
+    if (img) img.style.transform = `scale(${currentZoom})`;
+  }
+  document.addEventListener('click', event => {
+    if (event.target?.tagName === 'IMG' && !event.target.closest('#exhibitModal')) {
+      const src = event.target.getAttribute('src');
+      if (src) openExhibit(src);
+    }
+  });
+
+  /* Pre-index the complete question bank; the QID field is immediately writable. */
+  if ('requestIdleCallback' in window) requestIdleCallback(() => buildBank().catch(() => {}), { timeout: 1200 });
+  else setTimeout(() => buildBank().catch(() => {}), 300);
+})();
+</script>
+
 </body>
 </html>
