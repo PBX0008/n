@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IST Password</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    #password {
+      font-size: clamp(42px, 12vw, 96px);
+      font-weight: 800;
+      letter-spacing: 8px;
+      color: #111111;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+<div id="password">---</div>
+
+<script>
+const hourKey = {
+  "00":"u","01":"d","02":"a","03":"i","04":"h","05":"v",
+  "06":"e","07":"y","08":"r","09":"c","10":"n","11":"x",
+  "12":"o","13":"b","14":"s","15":"l","16":"w","17":"p",
+  "18":"k","19":"f","20":"g","21":"t","22":"z","23":"j"
+};
+
+const minuteKey = {
+  "00":"rr","01":"xf","02":"ky","03":"ag","04":"gh","05":"qq",
+  "06":"nk","07":"gd","08":"im","09":"ng","10":"ea","11":"dq",
+  "12":"oz","13":"dv","14":"od","15":"no","16":"xu","17":"kk",
+  "18":"bs","19":"sc","20":"vd","21":"ex","22":"ox","23":"dc",
+  "24":"vt","25":"lo","26":"yt","27":"yj","28":"og","29":"wt",
+  "30":"ho","31":"ct","32":"bu","33":"iz","34":"lk","35":"dd",
+  "36":"je","37":"dz","38":"rw","39":"za","40":"oj","41":"gk",
+  "42":"op","43":"nz","44":"ig","45":"kn","46":"zn","47":"cv",
+  "48":"xz","49":"gt","50":"va","51":"jq","52":"gl","53":"sf",
+  "54":"oy","55":"kq","56":"zf","57":"vy","58":"iq","59":"mu"
+};
+
+function getISTTime() {
+  const parts = new Intl.DateTimeFormat("en-GB", {
+    timeZone: "Asia/Kolkata",
+    hour12: false,
+    hour: "2-digit",
+    minute: "2-digit"
+  }).formatToParts(new Date());
+
+  const get = type => parts.find(p => p.type === type)?.value || "";
+  return { hour: get("hour"), minute: get("minute") };
+}
+
+function updatePassword() {
+  const { hour, minute } = getISTTime();
+  document.getElementById("password").textContent =
+    hourKey[hour] + minuteKey[minute];
+}
+
+updatePassword();
+setInterval(updatePassword, 1000);
+</script>
+
+</body>
+</html>
