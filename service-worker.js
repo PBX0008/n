@@ -1,5 +1,5 @@
 'use strict';
-const CACHE_VERSION = 'pbx-nclex-pwa-v10';
+const CACHE_VERSION = 'pbx-nclex-pwa-v11';
 const APP_CACHE = `${CACHE_VERSION}-app`;
 const RUNTIME_CACHE = `${CACHE_VERSION}-runtime`;
 const APP_SHELL = [

@@ -6,7 +6,7 @@ html,body{width:100%;height:100%;margin:0;overflow:hidden;font-family:"Helvetica
 /* The test runs in an iframe. iOS safe-area variables must be handled by this
    top-level PWA document so the iframe never sits under the status bar or
    leaves the parent's pale background exposed below the navigation. */
-#testFrame{position:fixed;left:0;right:0;top:var(--pwa-safe-top);bottom:var(--pwa-safe-bottom);width:100%;height:auto;display:block;border:0;background:#fff}
+#testFrame{position:fixed;left:0;right:0;top:var(--pwa-safe-top);width:100%;height:calc(100vh - var(--pwa-safe-top) - var(--pwa-safe-bottom));height:calc(100dvh - var(--pwa-safe-top) - var(--pwa-safe-bottom));display:block;border:0;background:#fff}
 .loading-screen{position:fixed;inset:var(--pwa-safe-top) 0 var(--pwa-safe-bottom);z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;background:linear-gradient(145deg,#eaf6ff,var(--page-blue-2));color:#153e67}.loader{width:42px;height:42px;border:4px solid rgba(21,62,103,.18);border-top-color:#2877ad;border-radius:50%;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
 .result-screen{position:fixed;inset:var(--pwa-safe-top) 0 var(--pwa-safe-bottom);z-index:60;padding:clamp(12px,3vw,30px);overflow:auto;color:var(--text);background:radial-gradient(circle at 18% 8%,rgba(255,255,255,.86),transparent 31%),linear-gradient(145deg,#eaf6ff 0%,var(--page-blue) 46%,var(--page-blue-2) 100%)}
 .result-card{width:min(960px,100%);margin:auto;border:1px solid var(--border);border-radius:22px;background:linear-gradient(165deg,rgba(247,252,255,.99),rgba(211,234,250,.99));box-shadow:inset 0 1px 0 #fff,0 14px 36px rgba(40,87,126,.18);overflow:hidden}
